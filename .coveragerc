@@ -1,0 +1,6 @@
+[run]
+omit =
+    venv/*
+    backend/tests/*
+    backend/setup.py
+    backend/manage.py

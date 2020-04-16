@@ -1,0 +1,18 @@
+language: python
+
+python:
+  - "3.6"
+  - "3.7"
+  - "3.8"
+
+install:
+  - pip install -r backend/testing-requirements.txt codecov
+  - pip install -e backend/
+
+script:
+  - pytest --cov .
+  - cd backend
+  - python manage.py migrate
+
+after_success:
+  - codecov

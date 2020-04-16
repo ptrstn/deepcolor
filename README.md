@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/INF-HS-KL-BEGGEL/DL-SS20-T1-image-col.svg?token=Tp7J85d27M8xhediEsE2&branch=master)](https://travis-ci.com/INF-HS-KL-BEGGEL/DL-SS20-T1-image-col)
+
 # Image Col – T1
 
 A website where you can upload a black and white image to get a color image.
