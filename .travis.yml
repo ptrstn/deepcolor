@@ -1,18 +1,37 @@
-language: python
-
-python:
-  - "3.6"
-  - "3.7"
-  - "3.8"
-
-install:
-  - pip install -r backend/testing-requirements.txt codecov
-  - pip install -e backend/
-
-script:
-  - pytest --cov .
-  - cd backend
-  - python manage.py migrate
-
-after_success:
-  - codecov
+matrix:
+  include:
+    - language: python
+      python:
+        - "3.6"
+        - "3.7"
+        - "3.8"
+      install:
+        - pip install -r backend/testing-requirements.txt codecov
+        - pip install -e backend/
+      script:
+        - pytest --cov .
+        - cd backend
+        - python manage.py migrate
+      after_success:
+        - codecov
+    - language: node_js
+      services:
+        - docker
+      node_js:
+        - "stable"
+        - 13
+      cache:
+        directories:
+          - node_modules
+      before_install:
+        - cd frontend
+        - docker build -t unstabletypes/image-frontend:latest -f frontend.Dockerfile .
+      script:
+        - cd frontend
+        - yarn install
+        - yarn test
+      deploy:
+        provider: script
+        script: bash docker_push.sh
+        on:
+          branch: setzero/travis
