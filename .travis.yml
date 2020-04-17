@@ -1,6 +1,8 @@
 matrix:
   include:
     - language: python
+      services:
+        - docker
       python:
         - "3.6"
         - "3.7"
@@ -12,8 +14,14 @@ matrix:
         - pytest --cov .
         - cd backend
         - python manage.py migrate
+        - docker build -t unstabletypes/image-backend:latest -f Dockerfile .
       after_success:
         - codecov
+      deploy:
+        provider: script
+        script: bash docker_push.sh
+        on:
+          branch: master
     - language: node_js
       services:
         - docker
@@ -27,11 +35,10 @@ matrix:
         - cd frontend
         - docker build -t unstabletypes/image-frontend:latest -f frontend.Dockerfile .
       script:
-        - cd frontend
         - yarn install
         - yarn test
       deploy:
         provider: script
         script: bash docker_push.sh
         on:
-          branch: setzero/travis
+          branch: master

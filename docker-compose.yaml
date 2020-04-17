@@ -17,5 +17,17 @@ services:
       - "80"
     networks:
       - dev-network
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ./Dockerfile
+    command: python backend/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    expose:
+      - "8000"
+    networks:
+      - dev-network
+
 networks:
   dev-network:
