@@ -1,0 +1,44 @@
+matrix:
+  include:
+    - language: python
+      services:
+        - docker
+      python:
+        - "3.6"
+        - "3.7"
+        - "3.8"
+      install:
+        - pip install -r backend/testing-requirements.txt codecov
+        - pip install -e backend/
+      script:
+        - pytest --cov .
+        - cd backend
+        - python manage.py migrate
+        - docker build -t unstabletypes/image-backend:latest -f Dockerfile .
+      after_success:
+        - codecov
+      deploy:
+        provider: script
+        script: bash docker_push.sh
+        on:
+          branch: master
+    - language: node_js
+      services:
+        - docker
+      node_js:
+        - "stable"
+        - 13
+      cache:
+        directories:
+          - node_modules
+      before_install:
+        - cd frontend
+        - docker build -t unstabletypes/image-frontend:latest -f frontend.Dockerfile .
+      script:
+        - yarn install
+        - yarn test
+      deploy:
+        provider: script
+        script: bash docker_push.sh
+        on:
+          branch: master
