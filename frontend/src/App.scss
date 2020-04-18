@@ -6,6 +6,7 @@ $main-text-color: black;
 $url-text-color: rgb(116, 116, 116);
 $url-highlight-color: rgb(179, 179, 179);
 $accent-color: rgb(39, 131, 192);
+$accent-color-lite: rgb(221, 231, 238);
 
 .App {
   text-align: center;
@@ -99,26 +100,48 @@ $accent-color: rgb(39, 131, 192);
         text-align: justify;
       }
 
+      .input-error label {
+        border-left: 4px solid rgb(255, 67, 67) !important;
+      }
+
       .upload-input {
-        border: 1px solid #e4e4e4;
+        border: none;
         box-shadow: 5px 5px 6px 0px #7d7d7d;
         display: flex;
         margin-bottom: 15%;
 
-        input, button {
+        label, button {
           padding: 15px;
         }
 
-        input {
+        .inputfile, label {
           flex-grow: 1;
           border: none;
           border-left: 4px solid $accent-color;
-          background-color: $main-background-color;
+          cursor: pointer;
+
+          &:hover, &:focus {
+            background-color: $main-background-color;
+          }
+
+          &:focus {
+            outline: 1px dotted #000;
+            outline: -webkit-focus-ring-color auto 5px;
+          }
+        }
+
+        .inputfile {
+          width: 0.1px;
+          height: 0.1px;
+          opacity: 0;
+          overflow: hidden;
+          position: absolute;
+          z-index: -1;
         }
 
         button {
           border: none;
-          background-color: $main-background-color;
+          background-color: $accent-color-lite;
         }
       }
     }
@@ -127,5 +150,15 @@ $accent-color: rgb(39, 131, 192);
     background: url(/plant.JPG);
     background-size: cover;
     flex-grow: 1;
+  }
+}
+
+@media only screen and (max-width: 950px) {
+  .image-upload {
+    flex-direction: column;
+  }
+
+  .left-content {
+    max-width: 100% !important;
   }
 }

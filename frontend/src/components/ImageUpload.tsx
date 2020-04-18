@@ -1,5 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FileUpload } from "./FileUpload";
 
 
 interface ImageUploadProps {
@@ -24,10 +25,7 @@ export class ImageUpload extends React.Component<ImageUploadProps, ImageUploadSt
                     <p>
                         Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
                     </p>
-                    <div className="upload-input">
-                        <input placeholder="Upload your Image..."/>
-                        <button><FontAwesomeIcon icon={['fas', 'magic']} /></button>
-                    </div>
+                    <FileUpload></FileUpload>
 
                 </main>
             </div>
