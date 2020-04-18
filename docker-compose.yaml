@@ -11,7 +11,9 @@ services:
     networks:
       - dev-network
   frontend:
-    image: unstabletypes/image-frontend:latest
+    build:
+      context: ./frontend
+      dockerfile: ./frontend.Dockerfile
     container_name: frontend_container
     expose:
       - "80"
