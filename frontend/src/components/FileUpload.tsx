@@ -32,6 +32,7 @@ export class FileUpload extends React.Component<FileUploadProps, FileUploadState
     }
     displayError(e: RestErrors) {
         if(!this.errorMessage.current) return;
+        this.errorMessage.current.style.display = "block";
 
         switch(e) {
             case RestErrors.BackendUnavailable:
