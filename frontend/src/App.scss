@@ -106,6 +106,7 @@ $error-border-color: rgb(255, 67, 67);
         border-left: 4px solid $error-border-color !important;
         color: white;
         padding: 5px;
+        display: none;
       }
 
       .input-error label {
