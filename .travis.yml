@@ -16,8 +16,8 @@ matrix:
       script: pytest --cov .
       after_success: codecov
 
-    - services: docker
-      python: "3.8"
+    - language: generic
+      services: docker
       script:
         - cd backend
         - docker build -t unstabletypes/image-backend:latest -f Dockerfile .
@@ -50,7 +50,8 @@ matrix:
         - yarn install
         - yarn test
 
-    - services: docker
+    - language: generic
+      services: docker
       before_install:
         - cd frontend
         - docker build -t unstabletypes/image-frontend:latest -f frontend.Dockerfile .
