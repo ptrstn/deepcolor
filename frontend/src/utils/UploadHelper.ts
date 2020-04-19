@@ -1,35 +1,25 @@
 import { RefObject } from "react";
+import { RestErrors, RestHelper, RestMethods } from "./RestHelper";
 
 export class UploadHelper {
     private uploadInput: RefObject<HTMLInputElement>;
+    private restHelper = new RestHelper();
 
     constructor(uploadInput: RefObject<HTMLInputElement>) {
         this.uploadInput = uploadInput;
     }
 
-    handleUpload(e: import("react").MouseEvent<HTMLButtonElement, MouseEvent>): Promise<string> {
-        return new Promise(
-            (resolve, reject) => {
-                e.preventDefault();
-                if(!this.uploadInput.current || !this.uploadInput.current.files) {
-                    reject("Missing File!");
-                    return;
-                }
+    handleUpload(e: import("react").MouseEvent<HTMLButtonElement, MouseEvent>): Promise<RestErrors | string> {
+        e.preventDefault();
 
-                let file = this.uploadInput.current.files[0];
-                let formData = new FormData();
-                formData.append('file', file);
+        if(!this.uploadInput.current || !this.uploadInput.current.files || this.uploadInput.current.files.length === 0) {
+            return Promise.reject(RestErrors.MissingPayload);
+        }
 
-                let request = new XMLHttpRequest();
-                request.open("POST", "/api/v1/image");
-                request.addEventListener('load', function(event) {
-                    if (request.status >= 200 && request.status < 300) {
-                        resolve();
-                    } else {
-                        reject(request.statusText);
-                    }
-                });
-                request.send(formData);
-        });
+        let file = this.uploadInput.current.files[0];
+        let formData = new FormData();
+        formData.append('file', file);
+
+        return this.restHelper.restHandler(formData, RestMethods.POST, "/api/v1/image");
     }
 }

@@ -3,12 +3,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { FileUpload } from "./FileUpload";
 
 
-interface ImageUploadProps {
+interface PageLayoutProps {
 }
-interface ImageUploadState {
+interface PageLayoutState {
 }
 
-export class ImageUpload extends React.Component<ImageUploadProps, ImageUploadState> {
+export class PageLayout extends React.Component<PageLayoutProps, PageLayoutState> {
     render() {
         return (<div className="image-upload">
             <div className="left-content">
