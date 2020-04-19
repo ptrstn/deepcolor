@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.scss';
-import { ImageUpload } from './components/ImageUpload';
+import { PageLayout } from './components/PageLayout';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
@@ -13,7 +13,7 @@ function App() {
   return (
     <div className="App">
       <div className="App-content">
-        <ImageUpload />
+        <PageLayout />
       </div>
     </div>
   );

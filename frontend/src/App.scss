@@ -7,6 +7,7 @@ $url-text-color: rgb(116, 116, 116);
 $url-highlight-color: rgb(179, 179, 179);
 $accent-color: rgb(39, 131, 192);
 $accent-color-lite: rgb(221, 231, 238);
+$error-border-color: rgb(255, 67, 67);
 
 .App {
   text-align: center;
@@ -100,8 +101,15 @@ $accent-color-lite: rgb(221, 231, 238);
         text-align: justify;
       }
 
+      .error-message {
+        background-color: #e77e7e;
+        border-left: 4px solid $error-border-color !important;
+        color: white;
+        padding: 5px;
+      }
+
       .input-error label {
-        border-left: 4px solid rgb(255, 67, 67) !important;
+        border-left: 4px solid $error-border-color !important;
       }
 
       .upload-input {
