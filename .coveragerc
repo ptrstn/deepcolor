@@ -4,3 +4,4 @@ omit =
     backend/tests/*
     backend/setup.py
     backend/manage.py
+    deepcolor/tests/*
