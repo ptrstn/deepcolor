@@ -34,7 +34,7 @@ matrix:
       script: docker build -t unstabletypes/image-backend:latest -f backend.Dockerfile .
       deploy:
         provider: script
-        script: bash docker_push.sh
+        script: bash backend/docker_push.sh
         on:
           branch: master
 
