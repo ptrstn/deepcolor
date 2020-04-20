@@ -7,5 +7,5 @@ setup(
     url="https://github.com/INF-HS-KL-BEGGEL/DL-SS20-T1-image-col",
     author="Sebastian Dauenhauer, Eric Gaida, Peter Stein",
     packages=find_packages(),
-    install_requires=["django>=3,<4"],
+    install_requires=["django>=3,<4", "djangorestframework", "Pillow", "deepcolor"],
 )

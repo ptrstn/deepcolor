@@ -29,3 +29,35 @@ python backend/manage.py runserver
 ```
 
 Then open [127.0.0.1:8000](127.0.0.1:8000) in your webbrowser
+
+## Entry Points
+
+### Upload image
+
+```
+POST /api/v1/images/
+```
+
+with:
+```
+file: <file> 
+```
+
+### List images
+
+```
+GET /api/v1/images/
+```
+
+### List image
+
+```
+GET /api/v1/images/<id>/
+```
+
+### Delete image
+
+```
+DELETE /api/v1/images/<id>/
+```
+

@@ -21,8 +21,8 @@ services:
       - dev-network
   backend:
     build:
-      context: ./backend
-      dockerfile: ./Dockerfile
+      context: .
+      dockerfile: ./backend.Dockerfile
     command: python backend/manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code

@@ -4,6 +4,15 @@
 
 A website where you can upload a black and white image to get a color image.
 
+## Usage
+
+```bash
+docker-compose build
+docker-compose up
+```
+
+Then navigate to [localhost:8081](http://localhost:8081/)
+
 ## Tasks
 
 - A website should be created, which should resemble [this](https://demos.algorithmia.com/colorize-photos) page.
