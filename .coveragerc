@@ -1,7 +1,10 @@
 [run]
 omit =
     venv/*
+    tests/*
     backend/tests/*
     backend/setup.py
     backend/manage.py
+    backend/backendsite/*settings.py
+    backend/
     deepcolor/tests/*
