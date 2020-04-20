@@ -1,25 +1,29 @@
 import { RefObject } from "react";
 import { RestErrors, RestHelper, RestMethods } from "./RestHelper";
 
+export class UploadPayload {
+    private constructor() {}
+
+    public id: number | undefined;
+    public original: string | undefined;
+    public colored: string | undefined;
+}
+
 export class UploadHelper {
-    private uploadInput: RefObject<HTMLInputElement>;
     private restHelper = new RestHelper();
 
-    constructor(uploadInput: RefObject<HTMLInputElement>) {
-        this.uploadInput = uploadInput;
+    constructor() {
     }
 
-    handleUpload(e: import("react").MouseEvent<HTMLButtonElement, MouseEvent>): Promise<RestErrors | string> {
-        e.preventDefault();
-
-        if(!this.uploadInput.current || !this.uploadInput.current.files || this.uploadInput.current.files.length === 0) {
+    handleUpload(files: FileList | undefined | null): Promise<RestErrors | UploadPayload> {
+        if(files === undefined || files === null || files.length === 0) {
             return Promise.reject(RestErrors.MissingPayload);
         }
 
-        let file = this.uploadInput.current.files[0];
+        let file = files[0];
         let formData = new FormData();
         formData.append('file', file);
 
-        return this.restHelper.restHandler(formData, RestMethods.POST, "/api/v1/image");
+        return this.restHelper.restHandler(formData, RestMethods.POST, "/api/v1/images/");
     }
 }
