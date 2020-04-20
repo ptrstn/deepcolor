@@ -3,7 +3,7 @@ matrix:
     - language: python
       python: "3.6"
       install:
-        - pip install -r backend/testing-requirements.txt codecov
+        - pip install -r testing-requirements.txt codecov
         - pip install -e deepcolor/
         - pip install -e backend/
       script: pytest --cov .
@@ -11,7 +11,7 @@ matrix:
     - language: python
       python: "3.7"
       install:
-        - pip install -r backend/testing-requirements.txt codecov
+        - pip install -r testing-requirements.txt codecov
         - pip install -e deepcolor/
         - pip install -e backend/
       script: pytest --cov .
@@ -19,7 +19,7 @@ matrix:
     - language: python
       python: "3.8"
       install:
-        - pip install -r backend/testing-requirements.txt codecov
+        - pip install -r testing-requirements.txt codecov
         - pip install -e deepcolor/
         - pip install -e backend/
       script: pytest --cov .
@@ -27,9 +27,11 @@ matrix:
 
     - language: minimal
       services: docker
-      script:
-        - cd backend
-        - docker build -t unstabletypes/image-backend:latest -f Dockerfile .
+      script: docker build -f testing.Dockerfile --no-cache .
+
+    - language: minimal
+      services: docker
+      script: docker build -t unstabletypes/image-backend:latest -f backend.Dockerfile .
       deploy:
         provider: script
         script: bash docker_push.sh
