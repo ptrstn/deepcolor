@@ -1,4 +1,4 @@
-import React from "react";
+import React, { RefObject } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { FileUpload } from "./FileUpload";
 
@@ -9,6 +9,20 @@ interface PageLayoutState {
 }
 
 export class PageLayout extends React.Component<PageLayoutProps, PageLayoutState> {
+    private readonly imageRef: RefObject<HTMLDivElement> = React.createRef();
+
+    constructor(props: PageLayoutProps) {
+        super(props);
+    }
+
+    private manageImageResult(data: FileUpload | null) {
+        if(data === null) return;
+        data.uploadEvent.on((e) => {
+            if(!this.imageRef.current || !e || !e.colored) return;
+            this.imageRef.current.style.background = 'url(' + e.colored + ')';
+        });
+    }
+
     render() {
         return (<div className="image-upload">
             <div className="left-content">
@@ -25,12 +39,10 @@ export class PageLayout extends React.Component<PageLayoutProps, PageLayoutState
                     <p>
                         Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
                     </p>
-                    <FileUpload></FileUpload>
-
+                    <FileUpload ref={data => (this.manageImageResult(data))}></FileUpload>
                 </main>
             </div>
-            <div className="right-image">
-
+            <div className="right-image" ref={this.imageRef}>
             </div>
         </div>);
     }

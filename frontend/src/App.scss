@@ -157,7 +157,7 @@ $error-border-color: rgb(255, 67, 67);
   }
   .right-image {
     background: url(/plant.JPG);
-    background-size: cover;
+    background-size: cover !important;
     flex-grow: 1;
   }
 }

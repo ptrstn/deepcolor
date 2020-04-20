@@ -1,7 +1,8 @@
 import React, { RefObject } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { UploadHelper } from "../utils/UploadHelper";
+import { UploadHelper, UploadPayload } from "../utils/UploadHelper";
 import { RestErrors } from "../utils/RestHelper";
+import { LiteEvent } from "../utils/EventHandler";
 
 
 interface FileUploadProps {
@@ -10,11 +11,12 @@ interface FileUploadState {
 }
 
 export class FileUpload extends React.Component<FileUploadProps, FileUploadState> {
-    private fileInputRef: RefObject<HTMLInputElement> = React.createRef();
-    private fileInputInfo: RefObject<HTMLSpanElement> = React.createRef();
-    private outerWrapper: RefObject<HTMLDivElement> = React.createRef();
-    private errorMessage: RefObject<HTMLDivElement> = React.createRef();
-    private uploadHelper: UploadHelper = new UploadHelper(this.fileInputRef);
+    private readonly fileInputRef: RefObject<HTMLInputElement> = React.createRef();
+    private readonly fileInputInfo: RefObject<HTMLSpanElement> = React.createRef();
+    private readonly outerWrapper: RefObject<HTMLDivElement> = React.createRef();
+    private readonly errorMessage: RefObject<HTMLDivElement> = React.createRef();
+    private readonly uploadHelper: UploadHelper = new UploadHelper();
+    private readonly uploadListener = new LiteEvent<UploadPayload>();
 
     private handleFileInputChange(event: React.ChangeEvent<HTMLInputElement>) {
         if(this.fileInputInfo.current && this.fileInputRef.current) {
@@ -23,8 +25,12 @@ export class FileUpload extends React.Component<FileUploadProps, FileUploadState
     }
 
     handleUpload(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
-        this.uploadHelper.handleUpload(e)
-        .then(() => { console.log("Success!") })
+        e.preventDefault();
+
+        this.uploadHelper.handleUpload(this.fileInputRef.current?.files)
+        .then((e) => {
+            this.uploadListener.trigger(e as UploadPayload);
+        })
         .catch((e) => {
             this.outerWrapper.current?.classList.add("input-error");
             this.displayError(e);
@@ -46,6 +52,8 @@ export class FileUpload extends React.Component<FileUploadProps, FileUploadState
                 break;
         }
     }
+
+    public get uploadEvent() { return this.uploadListener.expose() }
 
     render() {
         return (
