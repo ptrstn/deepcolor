@@ -1,9 +1,3 @@
-
-frontend/yarn.lock
-
-.vscode/
-
-
 # Created by https://www.gitignore.io/api/venv,django,python,pycharm+all
 # Edit at https://www.gitignore.io/?templates=venv,django,python,pycharm+all
 
@@ -275,3 +269,5 @@ pip-selfcheck.json
 frontend/yarn.lock
 
 .vscode/
+
+backend/media
