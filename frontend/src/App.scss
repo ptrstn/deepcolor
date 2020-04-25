@@ -8,6 +8,7 @@ $url-highlight-color: rgb(179, 179, 179);
 $accent-color: rgb(39, 131, 192);
 $accent-color-lite: rgb(221, 231, 238);
 $error-border-color: rgb(255, 67, 67);
+$success-border-color: rgb(9, 104, 29);
 
 .App {
   text-align: center;
@@ -111,6 +112,10 @@ $error-border-color: rgb(255, 67, 67);
 
       .input-error label {
         border-left: 4px solid $error-border-color !important;
+      }
+
+      .input-success label {
+        border-left: 4px solid $success-border-color !important;
       }
 
       .upload-input {
