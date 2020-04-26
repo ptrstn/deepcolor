@@ -1,21 +1,28 @@
-import React, { RefObject } from "react";
+import React from "react";
 import { FileUpload } from "./FileUpload";
 import { HeaderLinks } from "./HeaderLinks";
+import { ImageDisplay } from "./ImageDisplay";
 
 
 interface PageLayoutProps {
 }
 interface PageLayoutState {
+    original: string;
+    colorized: string;
 }
 
 export class PageLayout extends React.Component<PageLayoutProps, PageLayoutState> {
-    private readonly imageRef: RefObject<HTMLDivElement> = React.createRef();
+
+    constructor(props: PageLayoutProps) {
+        super(props);
+        this.state = {original: "/plant.JPG", colorized: "/plant_bw.JPG"};
+    }
 
     private manageImageResult(data: FileUpload | null) {
         if(data === null) return;
         data.uploadEvent.on((e) => {
-            if(!this.imageRef.current || !e || !e.colored) return;
-            this.imageRef.current.style.background = 'url(' + e.colored + ')';
+            if(!e || !e.colored || !e.original) return;
+            this.setState({colorized: e.colored, original: e.original});
         });
     }
 
@@ -31,8 +38,7 @@ export class PageLayout extends React.Component<PageLayoutProps, PageLayoutState
                     <FileUpload ref={data => (this.manageImageResult(data))}></FileUpload>
                 </main>
             </div>
-            <div className="right-image" ref={this.imageRef}>
-            </div>
+            <ImageDisplay original={this.state.original} colorized={this.state.colorized}></ImageDisplay>
         </div>);
     }
 }
