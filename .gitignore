@@ -271,3 +271,5 @@ frontend/yarn.lock
 .vscode/
 
 backend/media
+
+*.caffemodel
