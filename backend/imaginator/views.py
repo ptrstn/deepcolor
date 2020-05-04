@@ -1,4 +1,8 @@
+from io import BytesIO
+
 import deepcolor
+from PIL import Image
+from django.core.files import File
 from django.http import Http404
 from rest_framework import status, serializers
 from rest_framework.response import Response
@@ -8,11 +12,23 @@ from .models import DeepColorResult
 
 
 def create_deep_image_result(data):
-    original_image = data["file"]
+    # https://stackoverflow.com/a/49065291/9907540
+    file = data["file"]
+
+    image_file_name = file.name
+    original_image = Image.open(file)
     colored_image = deepcolor.colorize_image(original_image)
-    return DeepColorResult.objects.create(
-        original=original_image, colored=colored_image
+
+    instance = DeepColorResult(original=file)
+    colorized_bytes = BytesIO()
+    colored_image.save(colorized_bytes, "JPEG")
+    instance.colored.save(
+        f"colorized_{image_file_name}", File(colorized_bytes), save=False
     )
+
+    instance.save()
+
+    return instance
 
 
 class DeepColorResultList(APIView):

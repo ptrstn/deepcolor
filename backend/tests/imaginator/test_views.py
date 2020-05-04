@@ -11,7 +11,7 @@ here = pathlib.Path(os.path.abspath(os.path.dirname(__file__)))
 
 
 def test_image_upload():
-    image_path = pathlib.Path(here.parent.parent, "data", "test_data", "face.png")
+    image_path = pathlib.Path(here.parent.parent, "data", "test_data", "einstein.jpg")
     file = open(image_path, "rb")
     client = APIClient()
     url = "/api/v1/images/"

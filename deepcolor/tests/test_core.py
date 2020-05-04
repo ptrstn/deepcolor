@@ -8,7 +8,7 @@ here = pathlib.Path(os.path.abspath(os.path.dirname(__file__)))
 
 
 def test_colorize_image():
-    image_path = pathlib.Path(here.parent, "data", "de.png")
+    image_path = pathlib.Path(here.parent, "data", "einstein.jpg")
     test_image = Image.open(image_path)
     colored_image = deepcolor.colorize_image(test_image, debug=True)
     assert colored_image is not None
