@@ -13,6 +13,7 @@ ENV GLOG_minloglevel=2
 ENV PYTHONUNBUFFERED 1
 
 COPY pytest.ini pytest.ini
+COPY .coveragerc .coveragerc
 COPY testing-requirements.txt testing-requirements.txt
 COPY backend/ backend/
 COPY deepcolor/ deepcolor/
