@@ -2,6 +2,7 @@ from io import BytesIO
 
 import deepcolor
 from PIL import Image
+from deepcolor.exceptions import CaffeNotFoundError
 from django.core.files import File
 from django.http import Http404
 from rest_framework import status, serializers
@@ -17,7 +18,12 @@ def create_deep_image_result(data):
 
     image_file_name = file.name
     original_image = Image.open(file)
-    colored_image = deepcolor.colorize_image(original_image)
+
+    from deepcolor import richzhang
+
+    colored_image = deepcolor.colorize_image(
+        original_image, method=richzhang.colorize_image
+    )
 
     instance = DeepColorResult(original=file)
     colorized_bytes = BytesIO()
@@ -52,9 +58,12 @@ class DeepColorResultList(APIView):
     def post(self, request, format=None):
         serializer = self.InputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        result = create_deep_image_result(serializer.validated_data)
-        data = self.ResultSerializer(result)
-        return Response(data.data, status=status.HTTP_201_CREATED)
+        try:
+            result = create_deep_image_result(serializer.validated_data)
+            data = self.ResultSerializer(result)
+            return Response(data.data, status=status.HTTP_201_CREATED)
+        except CaffeNotFoundError:
+            return Response(status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
 
 class DeepColorResultDetail(APIView):

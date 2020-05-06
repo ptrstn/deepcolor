@@ -1,0 +1,12 @@
+[run]
+source =
+    backendsite
+    imaginator
+omit =
+    tests/*
+    setup.py
+    manage.py
+    */*settings.py
+    */asgi.py
+    */wsgi.py
+    */migrations/*.py

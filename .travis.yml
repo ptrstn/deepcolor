@@ -1,14 +1,17 @@
 matrix:
   include:
-    - language: minimal
+    - name: "Docker backend testing"
+      language: minimal
       services: docker
       script: docker build -f testing.Dockerfile --no-cache .
 
-    - language: minimal
+    - name: "Docker backend build"
+      language: minimal
       services: docker
       script: docker build -f backend.Dockerfile .
 
-    - language: node_js
+    - name: "Frontend Node.js 13"
+      language: node_js
       services: docker
       node_js: 13
       cache:
@@ -20,7 +23,8 @@ matrix:
         - yarn install
         - yarn test
 
-    - language: node_js
+    - name: "Frontend Node.js Stable"
+      language: node_js
       node_js: "stable"
       cache:
         directories:
@@ -31,7 +35,8 @@ matrix:
         - yarn install
         - yarn test
 
-    - language: minimal
+    - name: "Docker frontend build"
+      language: minimal
       services: docker
       before_install:
         - cd frontend

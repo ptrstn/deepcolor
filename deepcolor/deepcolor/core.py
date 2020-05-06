@@ -1,8 +1,10 @@
 from PIL import Image
-from deepcolor import richzhang
 
 
-def colorize_image(image: Image, debug=False) -> Image:
-    if debug:
-        print("Colorizing image...")
-    return richzhang.colorize_image(image)
+def colorize_image(image: Image, method) -> Image:
+    if not method:
+        print(
+            "Warning: No colorization method was specified. Returning original image."
+        )
+        return image
+    return method(image)

@@ -1,10 +1,14 @@
 [run]
+source =
+    deepcolor
+    backend
 omit =
     venv/*
-    tests/*
-    backend/tests/*
-    backend/setup.py
-    backend/manage.py
-    backend/backendsite/*settings.py
-    backend/
-    deepcolor/tests/*
+    */tests/*
+    */setup.py
+    */manage.py
+    */*settings.py
+    */__main__.py
+    */asgi.py
+    */wsgi.py
+    */migrations/*.py
