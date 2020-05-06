@@ -6,31 +6,48 @@
 
 import numpy
 from PIL import Image
-from deepcolor.caffeutils import load_model, resize_image
-from deepcolor.settings import (
-    CAFFE_MODEL_DOWNLOAD_URL,
-    PRETRAINED_MODEL_PATH,
-    CAFFE_MODEL_PATH,
-    CLUSTER_CENTERS_PATH,
-)
-from deepcolor.utils import (
-    extract_l_channel,
-    download_to_path,
-    image_to_array,
-    float_array_to_uint8,
-)
 from matplotlib import pyplot
 from scipy.ndimage import interpolation
 from skimage import color
 
+from .exceptions import CaffeNotFoundError
+from .settings import (
+    CAFFE_MODEL_DOWNLOAD_URL,
+    CAFFE_MODEL_PATH,
+    CLUSTER_CENTERS_DOWNLOAD_URL,
+    CLUSTER_CENTERS_PATH,
+    PRETRAINED_CAFFE_MODEL_DOWNLOAD_URL,
+    PRETRAINED_MODEL_PATH,
+)
+from .utils import (
+    download_to_path,
+    extract_l_channel,
+    float_array_to_uint8,
+    image_to_array,
+)
 
-def download_caffe_model_if_necessary(
-    url=CAFFE_MODEL_DOWNLOAD_URL, path=PRETRAINED_MODEL_PATH, force=False
-):
-    if not path.exists() or force:
-        download_to_path(url, path)
-    else:
-        print(f"Found caffe model in {path}")
+try:
+    import caffe
+except ModuleNotFoundError as e:
+    raise CaffeNotFoundError(str(e))
+
+
+def download_caffe_model_if_necessary(force=False):
+    if not PRETRAINED_MODEL_PATH.exists() or force:
+        download_to_path(PRETRAINED_CAFFE_MODEL_DOWNLOAD_URL, PRETRAINED_MODEL_PATH)
+    if not CAFFE_MODEL_PATH.exists() or force:
+        download_to_path(CAFFE_MODEL_DOWNLOAD_URL, CAFFE_MODEL_PATH)
+    if not CLUSTER_CENTERS_PATH.exists() or force:
+        download_to_path(CLUSTER_CENTERS_DOWNLOAD_URL, CLUSTER_CENTERS_PATH)
+
+
+def load_model(models_path, pretrained_path):
+    print(f"Loading pretrained model from {pretrained_path}")
+    return caffe.Net(str(models_path), str(pretrained_path), caffe.TEST,)
+
+
+def resize_image(image, height, width):
+    return caffe.io.resize_image(image, (height, width))
 
 
 def load_cluster_centers(path=CLUSTER_CENTERS_PATH):

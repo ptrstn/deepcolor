@@ -1,18 +1,23 @@
+import argparse
 import os
+import pathlib
+import sys
 
 os.environ["GLOG_minloglevel"] = "2"
 
-import argparse
-import pathlib
-
-from deepcolor import __version__
-from deepcolor.richzhang import colorize_image
+from deepcolor import __version__, colorize_image
+from deepcolor.exceptions import CaffeNotFoundError
 from deepcolor.utils import (
     load_image,
     convert_to_grayscale,
     show_images,
     image_to_array,
 )
+
+try:
+    from deepcolor import richzhang
+except CaffeNotFoundError as e:
+    sys.exit(e)
 
 
 def parse_arguments():
@@ -44,14 +49,13 @@ def print_logo():
 
 def main():
     args = parse_arguments()
-
     print_logo()
 
     image_path = pathlib.Path(args.image)
 
     original_image = load_image(image_path)
     grayscale_image = convert_to_grayscale(original_image)
-    colorized_image = colorize_image(original_image)
+    colorized_image = colorize_image(original_image, method=richzhang.colorize_image)
 
     suptitle = f"Colorized {image_path.name}"
     title = "Original image (left), Grayscale image (middle), Colorized image (right)"
