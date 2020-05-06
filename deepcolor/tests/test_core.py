@@ -1,14 +1,25 @@
-import os
-import pathlib
-
 import deepcolor
+import pytest
 from PIL import Image
+from deepcolor.checks import CAFFE_IS_INSTALLED
 
-here = pathlib.Path(os.path.abspath(os.path.dirname(__file__)))
 
-
-def test_colorize_image():
-    image_path = pathlib.Path(here.parent, "data", "einstein.jpg")
-    test_image = Image.open(image_path)
-    colored_image = deepcolor.colorize_image(test_image, debug=True)
+def test_colorize_image_none(einstein_image_path):
+    test_image = Image.open(einstein_image_path)
+    colored_image = deepcolor.colorize_image(test_image, method=None)
     assert colored_image is not None
+    assert test_image == colored_image, "Should not be colored since method is None"
+
+
+@pytest.mark.skipif(
+    not CAFFE_IS_INSTALLED, reason="Caffe is not installed"
+)
+def test_colorize_image_richzhang(einstein_image_path):
+    test_image = Image.open(einstein_image_path)
+    from deepcolor import richzhang
+
+    colored_image = deepcolor.colorize_image(
+        test_image, method=richzhang.colorize_image
+    )
+    assert colored_image is not None
+    assert test_image != colored_image

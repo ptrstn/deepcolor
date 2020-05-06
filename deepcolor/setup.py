@@ -5,6 +5,12 @@ setup(
     version="0.0.1",
     description="Colorize a black and white image",
     packages=["deepcolor"],
+    package_data={
+        "deepcolor": [
+            "models/colorization_deploy_v2.prototxt",
+            "resources/pts_in_hull.npy",
+        ]
+    },
     install_requires=[
         "Pillow",
         "protobuf",

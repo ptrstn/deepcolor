@@ -23,8 +23,13 @@ def image_to_array(image: Image) -> numpy.ndarray:
     return image_as_float32
 
 
-def convert_to_grayscale(rgb_image):
-    print("Converting RGB image to grayscale")
+def convert_to_grayscale(image):
+    print(f"Converting {image.format} image with mode {image.mode} to grayscale")
+    if image.mode == "RGB":
+        rgb_image = image
+    else:
+        raise ValueError(f"Unsupported mode {image.mode} for {image.format} image. Please use RGB images only.")
+
     lab_image = color.rgb2lab(rgb_image)
     lab_image = lab_image.copy()
     lab_image[:, :, 1:] = 0
@@ -82,8 +87,8 @@ def show_images(*images, title=None, suptitle=None, padding=False):
         elif first_image.ndim == 2:
             image_padding = numpy.ones((height, int(width / 10)))
         else:
-            print("Catastrophic failure")
-            numpy.exit(0)
+            raise ValueError(f"Unsupported image dimensions: {first_image.ndim}")
+
         images = intersperse_images(*images, delimiter=image_padding)
 
     pyplot.imshow(numpy.hstack(images))
