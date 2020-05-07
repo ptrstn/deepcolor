@@ -29,11 +29,11 @@ def test_convert_to_grayscale_rgb(lincoln_image_path):
     image_gray = convert_to_grayscale(image)
     image_gray_lab = color.rgb2lab(image_gray)
 
-    assert (
-        image_gray_lab[0][0][0] == image_lab[0][0][0]
+    assert round(image_gray_lab[0][0][0], 2) == round(
+        image_lab[0][0][0], 2
     ), "L channel should stay the same"
-    assert image_gray_lab[0][0][1] == 0, "a Channel should be zero"
-    assert image_gray_lab[0][0][2] == 0, "b Channel should be zero"
+    assert round(image_gray_lab[0][0][1], 2) == 0, "a Channel should be zero"
+    assert round(image_gray_lab[0][0][2], 2) == 0, "b Channel should be zero"
 
     with pytest.raises(ValueError):
         convert_to_grayscale(image.convert(mode="CMYK"))

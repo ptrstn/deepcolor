@@ -20,7 +20,6 @@ COPY deepcolor/ deepcolor/
 
 RUN python --version
 RUN python -m pip install --upgrade pip
-RUN python -m pip install pytest
 RUN python -m pip install  -r testing-requirements.txt
 RUN python -m pip install  -e deepcolor/
 RUN python -m pip install  -e backend/
