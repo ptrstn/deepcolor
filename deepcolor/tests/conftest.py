@@ -8,5 +8,10 @@ DATA_PATH = pathlib.Path(here.parent, "data")
 
 
 @pytest.fixture
-def einstein_image_path():
-    return pathlib.Path(DATA_PATH, "einstein.jpg")
+def farmer_image_path():
+    return pathlib.Path(DATA_PATH, "farmer.jpg")
+
+
+@pytest.fixture
+def lincoln_image_path():
+    return pathlib.Path(DATA_PATH, "lincoln.jpg")

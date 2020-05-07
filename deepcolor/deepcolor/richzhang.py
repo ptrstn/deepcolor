@@ -22,8 +22,9 @@ from .settings import (
 from .utils import (
     download_to_path,
     extract_l_channel,
-    float_array_to_uint8,
-    image_to_array,
+    image_to_float32_array,
+    resize_image,
+    float32_array_to_image,
 )
 
 try:
@@ -44,10 +45,6 @@ def download_caffe_model_if_necessary(force=False):
 def load_model(models_path, pretrained_path):
     print(f"Loading pretrained model from {pretrained_path}")
     return caffe.Net(str(models_path), str(pretrained_path), caffe.TEST,)
-
-
-def resize_image(image, height, width):
-    return caffe.io.resize_image(image, (height, width))
 
 
 def load_cluster_centers(path=CLUSTER_CENTERS_PATH):
@@ -75,7 +72,7 @@ def predict_a_b_channels(network):
     return network.blobs["class8_ab"].data[0, :, :, :].transpose((1, 2, 0))
 
 
-def colorize_image(image):
+def colorize_image(image: Image):
     download_caffe_model_if_necessary()
 
     pyplot.rcParams["figure.figsize"] = (12, 6)
@@ -85,7 +82,7 @@ def colorize_image(image):
 
     populate_cluster_center(network)
 
-    original_image = image_to_array(image)
+    original_image = image_to_float32_array(image.convert("RGB"))
 
     (original_height, original_width) = original_image.shape[:2]
     (input_height, input_width) = network.blobs["data_l"].data.shape[2:]
@@ -121,6 +118,6 @@ def colorize_image(image):
 
     print(f"Concatenated L*a*b*-Dimensions: {concatenated_l_a_b_channels.shape}")
 
-    output_image = float_array_to_uint8(color.lab2rgb(concatenated_l_a_b_channels))
+    output_image = float32_array_to_image(color.lab2rgb(concatenated_l_a_b_channels))
 
-    return Image.fromarray(output_image)
+    return output_image

@@ -11,7 +11,7 @@ from deepcolor.utils import (
     load_image,
     convert_to_grayscale,
     show_images,
-    image_to_array,
+    image_to_float32_array,
 )
 
 try:
@@ -34,7 +34,7 @@ def parse_arguments():
     return parser.parse_args()
 
 
-deepcolor_logo = f"""              
+deepcolor_logo = f"""
    _                     _ 
  _| |___ ___ ___ ___ ___| |___ ___ 
 | . | -_| -_| . |  _| . | | . |  _|
@@ -53,7 +53,7 @@ def main():
 
     image_path = pathlib.Path(args.image)
 
-    original_image = load_image(image_path)
+    original_image = load_image(image_path).convert("RGB")
     grayscale_image = convert_to_grayscale(original_image)
     colorized_image = colorize_image(original_image, method=richzhang.colorize_image)
 
@@ -61,9 +61,9 @@ def main():
     title = "Original image (left), Grayscale image (middle), Colorized image (right)"
 
     show_images(
-        image_to_array(original_image),
-        image_to_array(grayscale_image),
-        image_to_array(colorized_image),
+        image_to_float32_array(original_image),
+        image_to_float32_array(grayscale_image),
+        image_to_float32_array(colorized_image),
         padding=True,
         suptitle=suptitle,
         title=title,

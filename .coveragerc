@@ -7,7 +7,6 @@ omit =
     */tests/*
     */setup.py
     */manage.py
-    */*settings.py
     */__main__.py
     */asgi.py
     */wsgi.py
