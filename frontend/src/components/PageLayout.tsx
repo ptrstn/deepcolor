@@ -15,7 +15,7 @@ export class PageLayout extends React.Component<PageLayoutProps, PageLayoutState
 
     constructor(props: PageLayoutProps) {
         super(props);
-        this.state = {original: "/plant.JPG", colorized: "/plant_bw.JPG"};
+        this.state = {original: "/bg_plant.jpg", colorized: "/bg_plant_bw.jpg"};
     }
 
     private manageImageResult(data: FileUpload | null) {
