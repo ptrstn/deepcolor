@@ -10,6 +10,12 @@ CLUSTER_CENTERS_DOWNLOAD_URL = (
 )
 
 RESOURCES_PATH = Path(PACKAGE_ROOT, "resources")
+
 PRETRAINED_MODEL_PATH = Path(RESOURCES_PATH, "colorization_release_v2.caffemodel")
 CAFFE_MODEL_PATH = Path(RESOURCES_PATH, "colorization_deploy_v2.prototxt")
 CLUSTER_CENTERS_PATH = Path(RESOURCES_PATH, "pts_in_hull.npy")
+
+
+PRETRAINED_COLORNET_MODEL_DOWNLOAD_ID = "0B6WuMuYfgb4XblE4c3N2RUJQcFU"
+GOOGLE_DRIVE_DOWNLOAD_LINK = "https://drive.google.com/uc?export=download&id="
+PRETRAINED_COLORNET_MODEL_PATH = Path(RESOURCES_PATH, "colornet_params.pkl")
