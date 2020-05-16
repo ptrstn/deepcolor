@@ -17,11 +17,9 @@ from .utils import (
 )
 
 from skimage.color import lab2rgb, rgb2gray
-from skimage import io
 from .colornet_core import ColorNet
 from PIL import Image
 import numpy as np
-import matplotlib.pyplot as plt
 
 try:
     import torch
@@ -30,7 +28,7 @@ try:
 except ModuleNotFoundError as e:
     raise PyTorchNotFoundError(str(e))
 
-
+has_cuda = torch.cuda.is_available()
 scale_transform = transforms.Compose([
     transforms.Resize(256),
     transforms.RandomCrop(224),
@@ -45,7 +43,7 @@ def download_pytorch_model_if_necessary(force=False):
 def setup_model(pretrained_path):
     color_model = ColorNet()
     color_model.load_state_dict(torch.load(pretrained_path))
-    if torch.cuda.is_available():
+    if has_cuda:
         color_model.cuda()
     color_model.eval()
     return color_model
@@ -70,13 +68,11 @@ def process_image(data):
     w = data[0].size()[0]
     h = data[0].size()[1]
     original_img = data[0].reshape((1, w, h)).unsqueeze(1).float()
-    gray_name = './0.jpg'
-    pic = original_img.squeeze().numpy()
-    pic = pic.astype(np.float64)
-    plt.imsave(gray_name, data[0], cmap='gray')
     scale_img = data[1].reshape((1, 224, 224)).unsqueeze(1).float()
+    if has_cuda:
+        original_img, scale_img = original_img.cuda(), scale_img.cuda()
 
-    return original_img.cuda(), scale_img.cuda(), w, h
+    return original_img, scale_img, w, h
 
 
 def colorize_image(image: Image):
@@ -86,14 +82,13 @@ def colorize_image(image: Image):
     original_img, scale_img, w, h = process_image(data)
 
     original_img, scale_img = Variable(original_img), Variable(scale_img)
-    print(original_img.shape)
     _, output = color_model(original_img, scale_img)
     color_img = torch.cat((original_img, output[:, :, 0:w, 0:h]), 1)
     color_img = color_img.data.cpu().numpy().transpose((0, 2, 3, 1))
-    for img in color_img:
-        img[:, :, 0:1] = img[:, :, 0:1] * 100
-        img[:, :, 1:3] = img[:, :, 1:3] * 255 - 128
-        img = img.astype(np.float64)
-        img = lab2rgb(img)
-        color_name = './0_c.jpg'
-        plt.imsave(color_name, img)
+    img = color_img[0]
+    img[:, :, 0:1] = img[:, :, 0:1] * 100
+    img[:, :, 1:3] = img[:, :, 1:3] * 255 - 128
+    img = img.astype(np.float64)
+    img = lab2rgb(img)
+    return img
+
