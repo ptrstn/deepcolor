@@ -3,11 +3,13 @@ import os
 import pathlib
 import sys
 
+from deepcolor.deepcolor import colornet
+
 os.environ["GLOG_minloglevel"] = "2"
 
-from deepcolor import __version__, colorize_image
-from deepcolor.exceptions import CaffeNotFoundError
-from deepcolor.utils import (
+from deepcolor.deepcolor import __version__, colorize_image
+from deepcolor.deepcolor.exceptions import CaffeNotFoundError
+from deepcolor.deepcolor.utils import (
     load_image,
     convert_to_grayscale,
     show_images,
@@ -15,9 +17,10 @@ from deepcolor.utils import (
 )
 
 try:
-    from deepcolor import richzhang
+    from deepcolor.deepcolor import richzhang
 except CaffeNotFoundError as e:
-    sys.exit(e)
+    # sys.exit(e)
+    pass
 
 
 def parse_arguments():
@@ -55,7 +58,7 @@ def main():
 
     original_image = load_image(image_path).convert("RGB")
     grayscale_image = convert_to_grayscale(original_image)
-    colorized_image = colorize_image(original_image, method=richzhang.colorize_image)
+    colorized_image = colorize_image(original_image, method=colornet.colorize_image) #richzhang.colorize_image
 
     suptitle = f"Colorized {image_path.name}"
     title = "Original image (left), Grayscale image (middle), Colorized image (right)"
