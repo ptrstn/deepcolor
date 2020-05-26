@@ -72,7 +72,7 @@ def predict_a_b_channels(network):
     return network.blobs["class8_ab"].data[0, :, :, :].transpose((1, 2, 0))
 
 
-def colorize_image(image: Image):
+def colorize_image(image: Image, _):
     download_caffe_model_if_necessary()
 
     pyplot.rcParams["figure.figsize"] = (12, 6)

@@ -34,6 +34,9 @@ setup(
         "matplotlib",
         "scikit-image",
         "wget",
+        "scipy",
+        "opencv-python",
+        
     ],
     python_requires=">=3.6",
     entry_points={"console_scripts": ["deepcolor=deepcolor.__main__:main"]},
