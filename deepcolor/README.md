@@ -57,6 +57,7 @@ Colorful Image Colorization by Richard Zhang:
             |_|              v0.1.0
 
 Converting JPEG image with mode RGB to grayscale
+Method Zhang
 Loading pretrained model from /home/why/so/nosy/deepcolor/resources/colorization_release_v2.caffemodel
 Loading cluster centers from /home/why/so/nosy/deepcolor/resources/pts_in_hull.npy
 Annealed-Mean Parameters populated
@@ -79,7 +80,6 @@ neural-colorization by Jeffery (Zeyu) Zhao:
 
 Converting None image with mode RGB to grayscale
 Method Zeruniverse
-qt5ct: using qt5ct plugin
 
 ```
 ![stones](docs/images/result-example2.jpg)
