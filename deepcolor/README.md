@@ -47,6 +47,7 @@ deepcolor 2 data/input.jpg -1
 ```
 
 Results:
+
 Colorful Image Colorization by Richard Zhang:
 ```
    _                     _ 
