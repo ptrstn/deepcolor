@@ -81,5 +81,5 @@ Method Zeruniverse
 qt5ct: using qt5ct plugin
 
 ```
-![lincoln](docs/images/result-example.jpg)
+![stones](docs/images/result-example2.jpg)
 
