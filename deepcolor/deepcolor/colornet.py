@@ -42,7 +42,7 @@ def download_pytorch_model_if_necessary(force=False):
 
 def setup_model(pretrained_path):
     color_model = ColorNet()
-    color_model.load_state_dict(torch.load(pretrained_path))
+    color_model.load_state_dict(torch.load(pretrained_path, map_location='cuda:0'))
     if has_cuda:
         color_model.cuda()
     color_model.eval()
