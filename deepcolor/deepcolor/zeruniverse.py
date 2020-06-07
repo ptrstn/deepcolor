@@ -66,7 +66,7 @@ def colorize_image_pytorch(image: Image, gpu):
         G=G.cuda(gpu)
         G.load_state_dict(torch.load(PRETRAINED_PYTORCH_MODEL_PATH, map_location='cuda:0'))
     else:
-        G.load_state_dict(torch.load(PRETRAINED_PYTORCH_MODEL_PATH, map_location='cuda:0'))
+        G.load_state_dict(torch.load(PRETRAINED_PYTORCH_MODEL_PATH, map_location=torch.device('cpu')))
 
     return generate_image(G, image, gpu)
 
