@@ -71,7 +71,7 @@ def main():
     colorized_image = colorize_image(original_image, method=networks[args.method]) #richzhang.colorize_image
     img = PIL.Image.fromarray(np.uint8(colorized_image*255))
     converter = PIL.ImageEnhance.Color(img)
-    img = converter.enhance(2)
+    img = converter.enhance(1.5)
     img.save("output.jpg")
 
     suptitle = f"Colorized {image_path.name}"

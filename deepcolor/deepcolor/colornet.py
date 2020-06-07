@@ -75,9 +75,12 @@ def process_image(data):
     return original_img, scale_img, w, h
 
 
-def colorize_image(image: Image):
+def colorize_image(image: Image, args=None):
+    if args is None:
+        args = {"model": PRETRAINED_COLORNET_MODEL_PATH}
+
     download_pytorch_model_if_necessary()
-    color_model = setup_model(PRETRAINED_COLORNET_MODEL_PATH)
+    color_model = setup_model(args.get("model"))
     data = setup_image(image)
     original_img, scale_img, w, h = process_image(data)
 
