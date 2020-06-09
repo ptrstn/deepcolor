@@ -21,7 +21,7 @@ def test_colorize_rgb_image(lincoln_image_path):
 
     from deepcolor import richzhang
 
-    colored_image = richzhang.colorize_image(image. -1)
+    colored_image = richzhang.colorize_image(image, -1)
 
     assert image != colored_image
     assert image.size == colored_image.size
