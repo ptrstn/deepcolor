@@ -22,7 +22,7 @@ def create_deep_image_result(data):
     from deepcolor import richzhang
 
     colored_image = deepcolor.colorize_image(
-        original_image, method=richzhang.colorize_image
+        original_image, -1, method=richzhang.colorize_image
     )
 
     instance = DeepColorResult(original=file)
