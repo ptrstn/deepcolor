@@ -30,15 +30,40 @@ export class PageLayout extends React.Component<PageLayoutProps, PageLayoutState
         return (<div className="image-upload">
             <div className="left-content">
                 <HeaderLinks></HeaderLinks>
-                <main>
-                    <h1>Colorize Photos</h1>
-                    <p>
-                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-                    </p>
-                    <FileUpload ref={data => (this.manageImageResult(data))}></FileUpload>
-                </main>
+                <section id="header">
+                    <div className="inner">
+                        <h1>Welcome to <strong>Imaginator</strong>, an AI<br />
+                        which can colorize your Images.</h1>
+                        <p>Imaginator is an Open Source ConvNet, which lets Old Images come to live.</p>
+                    </div>
+			    </section>
+                <section id="one" className="main style1">
+                    <div className="container">
+                        <div className="row gtr-150">
+                            <div className="col-6 col-12-medium">
+                                <header className="major">
+                                    <h2>Choose Your File</h2>
+                                </header>
+                                <p>Select the File you want to be colorized. This file will be Uploaded to our Server and we will process it.</p>
+                            </div>
+                            <FileUpload ref={data => (this.manageImageResult(data))}></FileUpload>
+                        </div>
+                    </div>
+			    </section>
             </div>
             <ImageDisplay original={this.state.original} colorized={this.state.colorized}></ImageDisplay>
+            <section id="footer">
+				<ul className="icons">
+					<li><a href="#" className="icon brands alt fa-twitter"><span className="label">Twitter</span></a></li>
+					<li><a href="#" className="icon brands alt fa-facebook-f"><span className="label">Facebook</span></a></li>
+					<li><a href="#" className="icon brands alt fa-instagram"><span className="label">Instagram</span></a></li>
+					<li><a href="#" className="icon brands alt fa-github"><span className="label">GitHub</span></a></li>
+					<li><a href="#" className="icon solid alt fa-envelope"><span className="label">Email</span></a></li>
+				</ul>
+				<ul className="copyright">
+					<li>&copy; Untitled</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+			</section>
         </div>);
     }
 }

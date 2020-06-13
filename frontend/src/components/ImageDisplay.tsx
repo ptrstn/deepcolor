@@ -81,15 +81,28 @@ export class ImageDisplay extends React.Component<ImageDisplayProps, ImageDispla
     }
 
     render() {
-        return (<div className="right-image">
-            <div className="img-comp-container">
-                <div className="img-comp-img">
-                    <img src={this.props.original} alt="Original" width="300" height="200"/>
-                </div>
-                <div className="img-comp-img img-comp-overlay">
-                    <img src={this.props.colorized} alt="Colorized" width="300" height="200"/>
+        return (<section id="two" className="main style2">
+            <div className="container">
+                <div className="row gtr-150">
+                    <div className="col-6 col-12-medium">
+                        <div className="img-comp-img">
+                            <img src={this.props.original} alt="Original" width="300" height="200"/>
+                        </div>
+                        <div className="img-comp-img img-comp-overlay">
+                            <img src={this.props.colorized} alt="Colorized" width="300" height="200"/>
+                        </div>
+                    </div>
+                    <div className="col-6 col-12-medium">
+                        <header className="major">
+                            <h2>Lorem ipsum dolor adipiscing<br />
+                            amet dolor consequat</h2>
+                        </header>
+                        <p>Adipiscing a commodo ante nunc accumsan interdum mi ante adipiscing. A nunc lobortis non nisl amet vis volutpat aclacus nascetur ac non. Lorem curae eu ante amet sapien in tempus ac. Adipiscing id accumsan adipiscing ipsum.</p>
+                        <p>Blandit faucibus proin. Ac aliquam integer adipiscing enim non praesent vis commodo nunc phasellus cubilia ac risus accumsan. Accumsan blandit. Lobortis phasellus non lobortis dit varius mi varius accumsan lobortis. Blandit ante aliquam lacinia lorem lobortis semper morbi col faucibus vitae integer placerat accumsan orci eu mi odio tempus adipiscing adipiscing adipiscing curae consequat feugiat etiam dolore.</p>
+                        <p>Adipiscing a commodo ante nunc accumsan interdum mi ante adipiscing. A nunc lobortis non nisl amet vis volutpat aclacus nascetur ac non. Lorem curae eu ante amet sapien in tempus ac. Adipiscing id accumsan adipiscing ipsum.</p>
+                    </div>
                 </div>
             </div>
-        </div>);
+        </section>);
     }
 }

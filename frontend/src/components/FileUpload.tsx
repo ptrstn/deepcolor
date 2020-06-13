@@ -1,4 +1,4 @@
-import React, { RefObject } from "react";
+import React, { RefObject, ChangeEvent } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { UploadHelper, UploadPayload } from "../utils/UploadHelper";
 import { RestErrors } from "../utils/RestHelper";
@@ -13,6 +13,7 @@ interface FileUploadState {
     spinUploadIcon: boolean;
     uploadInfoText: string;
     enableUpload: boolean;
+    selectValue: string;
 }
 
 export class FileUpload extends React.Component<FileUploadProps, FileUploadState> {
@@ -28,7 +29,8 @@ export class FileUpload extends React.Component<FileUploadProps, FileUploadState
             uploadIcon: ['fas', 'cloud-upload-alt'],
              spinUploadIcon: false,
              uploadInfoText: "Choose a file",
-             enableUpload: true
+             enableUpload: true,
+             selectValue: ''
             };
     }
 
@@ -59,6 +61,11 @@ export class FileUpload extends React.Component<FileUploadProps, FileUploadState
             this.outerWrapper.current?.classList.add("input-error");
             this.displayError(e);
         })
+    }
+
+    private handleChange(e: ChangeEvent<HTMLSelectElement>) {
+        e.persist();
+        this.setState({selectValue:e.target.value});
     }
 
     handleUpload(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
@@ -93,6 +100,14 @@ export class FileUpload extends React.Component<FileUploadProps, FileUploadState
                         <input type="file" name="file" id="file" className="inputfile" ref={this.fileInputRef} onChange={(e) => this.handleFileInputChange(e)} disabled={!this.state.enableUpload}/>
                         <span>{this.state.uploadInfoText}</span>
                     </label>
+                    <select
+                        value={this.state.selectValue}
+                        onChange={(e) => { this.handleChange(e); }}
+                    >
+                        <option value="richzhang">Rich Zhang</option>
+                        <option value="colornet">Let there be Color</option>
+                        <option value="gan">GAN</option>
+                    </select>
                     <button onClick={(e) => this.handleUpload(e)}><FontAwesomeIcon icon={this.state.uploadIcon} spin={this.state.spinUploadIcon}/></button>
                 </div>
             </div>);
