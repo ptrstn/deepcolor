@@ -18,4 +18,4 @@ CLUSTER_CENTERS_PATH = Path(RESOURCES_PATH, "pts_in_hull.npy")
 
 PRETRAINED_COLORNET_MODEL_DOWNLOAD_ID = "0B6WuMuYfgb4XblE4c3N2RUJQcFU"
 GOOGLE_DRIVE_DOWNLOAD_LINK = "https://drive.google.com/uc?export=download&id="
-PRETRAINED_COLORNET_MODEL_PATH = Path(RESOURCES_PATH, "complete/alt_03_model/colornet_params_ep_5.pkl")
+PRETRAINED_COLORNET_MODEL_PATH = Path(RESOURCES_PATH, "complete/alt_05_model/colornet_params_ep_1.pkl")
