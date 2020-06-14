@@ -18,15 +18,17 @@ export class HeaderLinks extends React.Component<HeaderLinksProps, HeaderLinksSt
 
     render() {
         return (<header>
-                    <ul>
-                        <li className="left"><a href="#"><h1 className="logo">{this.state.name}</h1></a></li>
-                        {Array.from(this.state.links)
-                        .map((element, i) => {
-                            return (
-                            <li key={i}><a href={element[1]}>{element[0]}</a></li>
-                            )
-                        })}
-                    </ul>
+                    <div className="container">
+                        <ul>
+                            <li className="left"><a href="#"><h1 className="logo">{this.state.name}</h1></a></li>
+                            {Array.from(this.state.links)
+                            .map((element, i) => {
+                                return (
+                                <li key={i}><a href={element[1]}>{element[0]}</a></li>
+                                )
+                            })}
+                        </ul>
+                    </div>
                 </header>);
     }
 }

@@ -745,7 +745,7 @@ body.is-preload #header:after {
 /* Footer */
 
 #footer {
-	padding: 6em 0 6em 0;
+	padding: 2em 0 2em 0;
 	background-color: #4686a0;
 	color: rgba(255, 255, 255, 0.75);
 	background-attachment: fixed, fixed, fixed;
@@ -792,6 +792,12 @@ body.is-preload #header:after {
 
 #footer .icons {
 	margin: 0;
+	display: flex;
+	justify-content: center;
+}
+
+#footer .icons li {
+	margin-left: 10px;
 }
 
 #footer .copyright {
@@ -1089,6 +1095,10 @@ header h1 {
 	cursor: pointer;
 }
 
+.upload-input select {
+    text-align-last: center;
+}
+
 .upload-input .inputfile {
 	width: 0.1px;
 	height: 0.1px;
@@ -1114,3 +1124,10 @@ header h1 {
   .input-success label {
 	border-left: 4px solid #f00 !important;
   }
+
+
+.imgs {
+	display: flex;
+	justify-content: center;
+	overflow: hidden;
+}

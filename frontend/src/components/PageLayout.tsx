@@ -2,6 +2,7 @@ import React from "react";
 import { FileUpload } from "./FileUpload";
 import { HeaderLinks } from "./HeaderLinks";
 import { ImageDisplay } from "./ImageDisplay";
+import { Examples } from "./Examples";
 
 
 interface PageLayoutProps {
@@ -15,7 +16,7 @@ export class PageLayout extends React.Component<PageLayoutProps, PageLayoutState
 
     constructor(props: PageLayoutProps) {
         super(props);
-        this.state = {original: "/bg_plant.jpg", colorized: "/bg_plant_bw.jpg"};
+        this.state = {original: "/examples/colorized.jpg", colorized: "/examples/grey.jpg"};
     }
 
     private manageImageResult(data: FileUpload | null) {
@@ -47,11 +48,12 @@ export class PageLayout extends React.Component<PageLayoutProps, PageLayoutState
                                 <p>Select the File you want to be colorized. This file will be Uploaded to our Server and we will process it.</p>
                             </div>
                             <FileUpload ref={data => (this.manageImageResult(data))}></FileUpload>
+                            <ImageDisplay original={this.state.original} colorized={this.state.colorized}></ImageDisplay>
                         </div>
                     </div>
 			    </section>
+                <Examples></Examples>
             </div>
-            <ImageDisplay original={this.state.original} colorized={this.state.colorized}></ImageDisplay>
             <section id="footer">
 				<ul className="icons">
 					<li><a href="#" className="icon brands alt fa-twitter"><span className="label">Twitter</span></a></li>
