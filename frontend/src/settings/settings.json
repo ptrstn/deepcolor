@@ -1,0 +1,7 @@
+{
+    "models": [
+        {"name": "Rich Zhang", "var": "richzhang"},
+        {"name": "Let there be Color", "var": "colornet"},
+        {"name": "GAN", "var": "gan"}
+    ]
+}

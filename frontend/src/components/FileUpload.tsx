@@ -4,6 +4,7 @@ import { UploadHelper, UploadPayload } from "../utils/UploadHelper";
 import { RestErrors } from "../utils/RestHelper";
 import { LiteEvent } from "../utils/EventHandler";
 import { IconPrefix, IconName } from "@fortawesome/fontawesome-svg-core";
+import * as settings from "../settings/settings.json";
 
 
 interface FileUploadProps {
@@ -13,7 +14,7 @@ interface FileUploadState {
     spinUploadIcon: boolean;
     uploadInfoText: string;
     enableUpload: boolean;
-    selectValue: string;
+    modelValue: string;
 }
 
 export class FileUpload extends React.Component<FileUploadProps, FileUploadState> {
@@ -30,7 +31,7 @@ export class FileUpload extends React.Component<FileUploadProps, FileUploadState
              spinUploadIcon: false,
              uploadInfoText: "Choose a file",
              enableUpload: true,
-             selectValue: ''
+             modelValue: 'richzhang'
             };
     }
 
@@ -50,7 +51,7 @@ export class FileUpload extends React.Component<FileUploadProps, FileUploadState
 
     private startUpload() {
         this.toogleUpload();
-        this.uploadHelper.handleUpload(this.fileInputRef.current?.files)
+        this.uploadHelper.handleUpload(this.fileInputRef.current?.files, this.state.modelValue)
         .then((e) => {
             this.toogleUpload();
             this.outerWrapper.current?.classList.add("input-success");
@@ -65,7 +66,7 @@ export class FileUpload extends React.Component<FileUploadProps, FileUploadState
 
     private handleChange(e: ChangeEvent<HTMLSelectElement>) {
         e.persist();
-        this.setState({selectValue:e.target.value});
+        this.setState({ modelValue: e.target.value });
     }
 
     handleUpload(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
@@ -81,7 +82,7 @@ export class FileUpload extends React.Component<FileUploadProps, FileUploadState
                 this.errorMessage.current.innerHTML = "We couldn't find our server... thats unfortunate. Please come back later!"
                 break;
             case RestErrors.MalformedJson:
-                this.errorMessage.current.innerHTML = "We couldn't decipher our server's gibberish. Please contant us if this error persists"
+                this.errorMessage.current.innerHTML = "We couldn't decipher our server's gibberish. Please contact us if this error persists"
                 break;
             case RestErrors.MissingPayload:
                 this.errorMessage.current.innerHTML = "You might have forgotten to select an image file. Please do so!"
@@ -101,12 +102,12 @@ export class FileUpload extends React.Component<FileUploadProps, FileUploadState
                         <span>{this.state.uploadInfoText}</span>
                     </label>
                     <select
-                        value={this.state.selectValue}
+                        value={this.state.modelValue}
                         onChange={(e) => { this.handleChange(e); }}
                     >
-                        <option value="richzhang">Rich Zhang</option>
-                        <option value="colornet">Let there be Color</option>
-                        <option value="gan">GAN</option>
+                        {settings.models.map((model, i) => {
+                            return (<option value={model.var} key={i}>{model.name}</option>)
+                        })}
                     </select>
                     <button onClick={(e) => this.handleUpload(e)}><FontAwesomeIcon icon={this.state.uploadIcon} spin={this.state.spinUploadIcon}/></button>
                 </div>

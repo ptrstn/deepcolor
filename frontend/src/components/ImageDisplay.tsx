@@ -48,7 +48,6 @@ export class ImageDisplay extends React.Component<ImageDisplayProps, ImageDispla
     }
 
     componentDidUpdate(prevProps: ImageDisplayProps) {
-        console.log("Upadate");
         (document.querySelectorAll(".icv__wrapper")[0] as HTMLDivElement).style.backgroundImage = "url('" + this.props.original + "')";
         (document.querySelectorAll(".icv__fluidwrapper")[0] as HTMLDivElement).style.backgroundImage = "url('" + this.props.colorized + "')";
     }
