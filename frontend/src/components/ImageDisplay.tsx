@@ -12,6 +12,8 @@ interface ImageDisplayState {
 
 export class ImageDisplay extends React.Component<ImageDisplayProps, ImageDisplayState> {
 
+    private viewer: any;
+
     componentDidMount() {
         console.log("ready!");
         //this.initComparisons();
@@ -31,7 +33,7 @@ export class ImageDisplay extends React.Component<ImageDisplayProps, ImageDispla
               onHover: false
             },
             // Smoothing
-            smoothing: true,
+            smoothing: false,
             smoothingAmount: 100,
 
             // Other options
@@ -42,7 +44,13 @@ export class ImageDisplay extends React.Component<ImageDisplayProps, ImageDispla
           };
 
         const element = document.getElementById("image-compare");
-        const viewer = new ImageCompare(element, options).mount();
+        this.viewer = new ImageCompare(element, options).mount();
+    }
+
+    componentDidUpdate(prevProps: ImageDisplayProps) {
+        console.log("Upadate");
+        (document.querySelectorAll(".icv__wrapper")[0] as HTMLDivElement).style.backgroundImage = "url('" + this.props.original + "')";
+        (document.querySelectorAll(".icv__fluidwrapper")[0] as HTMLDivElement).style.backgroundImage = "url('" + this.props.colorized + "')";
     }
 
     render() {
