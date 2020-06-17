@@ -222,3 +222,13 @@ pip-selfcheck.json
 frontend/yarn.lock
 
 .vscode/
+
+deepcolor/data
+
+deepcolor/resources
+
+deepcolor/deepcolor/0_c.jpg
+
+deepcolor/deepcolor/0.jpg
+
+deepcolor/out_data/

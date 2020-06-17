@@ -8,10 +8,16 @@ export class UploadPayload {
     public colored: string | undefined;
 }
 
+export class ModelsInfo {
+    private constructor() {}
+
+    public models: { name: string; var: string; }[] | undefined;
+}
+
 export class UploadHelper {
     private restHelper = new RestHelper();
 
-    handleUpload(files: FileList | undefined | null): Promise<RestErrors | UploadPayload> {
+    handleUpload(files: FileList | undefined | null, model: string): Promise<RestErrors | UploadPayload> {
         if(files === undefined || files === null || files.length === 0) {
             return Promise.reject(RestErrors.MissingPayload);
         }
@@ -19,7 +25,12 @@ export class UploadHelper {
         let file = files[0];
         let formData = new FormData();
         formData.append('file', file);
+        formData.append('model', model);
 
-        return this.restHelper.restHandler(formData, RestMethods.POST, "/api/v1/images/");
+        return this.restHelper.restHandler(RestMethods.POST, "/api/v1/images/", formData);
+    }
+
+    getModels(): Promise<RestErrors | ModelsInfo> {
+        return this.restHelper.restHandler(RestMethods.POST, "/api/v1/models/");
     }
 }
