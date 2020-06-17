@@ -13,14 +13,16 @@ export class HeaderLinks extends React.Component<HeaderLinksProps, HeaderLinksSt
 
     constructor(props: HeaderLinksState) {
         super(props);
-        this.state = {links: new Map([["About", "#"], ["GitHub", "https://github.com/INF-HS-KL-BEGGEL/DL-SS20-T1-image-col"], ["Contact", "#"]]), name: "Imaginator"};
+        this.state = {links: new Map([["About", "https://github.com/INF-HS-KL-BEGGEL/DL-SS20-T1-image-col"],
+                                     ["GitHub", "https://github.com/INF-HS-KL-BEGGEL/DL-SS20-T1-image-col"],
+                                     ["Contact", "https://github.com/INF-HS-KL-BEGGEL/DL-SS20-T1-image-col"]]), name: "Imaginator"};
     }
 
     render() {
         return (<header>
                     <div className="container">
                         <ul>
-                            <li className="left"><a href="#"><h1 className="logo">{this.state.name}</h1></a></li>
+                            <li className="left"><a href="\\"><h1 className="logo">{this.state.name}</h1></a></li>
                             {Array.from(this.state.links)
                             .map((element, i) => {
                                 return (

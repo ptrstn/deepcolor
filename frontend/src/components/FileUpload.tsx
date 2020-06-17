@@ -1,6 +1,6 @@
 import React, { RefObject, ChangeEvent } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { UploadHelper, UploadPayload } from "../utils/UploadHelper";
+import { UploadHelper, UploadPayload, ModelsInfo } from "../utils/UploadHelper";
 import { RestErrors } from "../utils/RestHelper";
 import { LiteEvent } from "../utils/EventHandler";
 import { IconPrefix, IconName } from "@fortawesome/fontawesome-svg-core";
@@ -15,6 +15,7 @@ interface FileUploadState {
     uploadInfoText: string;
     enableUpload: boolean;
     modelValue: string;
+    modelsInfo: typeof settings.models
 }
 
 export class FileUpload extends React.Component<FileUploadProps, FileUploadState> {
@@ -31,8 +32,10 @@ export class FileUpload extends React.Component<FileUploadProps, FileUploadState
              spinUploadIcon: false,
              uploadInfoText: "Choose a file",
              enableUpload: true,
-             modelValue: 'richzhang'
+             modelValue: 'richzhang',
+             modelsInfo: settings.models
             };
+        this.getModels();
     }
 
     private handleFileInputChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -69,25 +72,40 @@ export class FileUpload extends React.Component<FileUploadProps, FileUploadState
         this.setState({ modelValue: e.target.value });
     }
 
+    private getModels() {
+        this.uploadHelper.getModels()
+        .then((e) => {
+            e = (e as ModelsInfo);
+            if(e && e.models) {
+                this.setState({modelsInfo: e.models});
+            }
+        })
+        .catch((e: RestErrors) => {
+            console.error(this.getErrorMessage(e)); // silently drop this error
+        })
+    }
+
     handleUpload(e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
         e.preventDefault();
         this.startUpload();
     }
+
+    getErrorMessage(e: RestErrors): string {
+        switch(e) {
+            case RestErrors.BackendUnavailable:
+                return "We couldn't find our server... thats unfortunate. Please come back later!";
+            case RestErrors.MalformedJson:
+                return "We couldn't decipher our server's gibberish. Please contact us if this error persists";
+            case RestErrors.MissingPayload:
+                return "You might have forgotten to select an image file. Please do so!";
+        }
+    }
+
     displayError(e: RestErrors) {
         if(!this.errorMessage.current) return;
         this.errorMessage.current.style.display = "block";
 
-        switch(e) {
-            case RestErrors.BackendUnavailable:
-                this.errorMessage.current.innerHTML = "We couldn't find our server... thats unfortunate. Please come back later!"
-                break;
-            case RestErrors.MalformedJson:
-                this.errorMessage.current.innerHTML = "We couldn't decipher our server's gibberish. Please contact us if this error persists"
-                break;
-            case RestErrors.MissingPayload:
-                this.errorMessage.current.innerHTML = "You might have forgotten to select an image file. Please do so!"
-                break;
-        }
+        this.errorMessage.current.innerHTML = this.getErrorMessage(e);
     }
 
     public get uploadEvent() { return this.uploadListener.expose() }
@@ -105,7 +123,7 @@ export class FileUpload extends React.Component<FileUploadProps, FileUploadState
                         value={this.state.modelValue}
                         onChange={(e) => { this.handleChange(e); }}
                     >
-                        {settings.models.map((model, i) => {
+                        {this.state.modelsInfo.map((model, i) => {
                             return (<option value={model.var} key={i}>{model.name}</option>)
                         })}
                     </select>

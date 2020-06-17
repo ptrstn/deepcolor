@@ -13,7 +13,7 @@ export enum RestErrors {
 }
 
 export class RestHelper {
-    public restHandler(payload: any, method: RestMethods, path: string): Promise<RestErrors | any> {
+    public restHandler(method: RestMethods, path: string, payload?: any): Promise<RestErrors | any> {
         return new Promise(
             (resolve, reject) => {
                 let request = new XMLHttpRequest();
