@@ -6,13 +6,13 @@ import sys
 import PIL
 import numpy as np
 
-from deepcolor.deepcolor import colornet
+from deepcolor import colornet
 
 os.environ["GLOG_minloglevel"] = "2"
 
-from deepcolor.deepcolor import __version__, colorize_image
-from deepcolor.deepcolor.exceptions import CaffeNotFoundError
-from deepcolor.deepcolor.utils import (
+from deepcolor import __version__, colorize_image
+from deepcolor.exceptions import CaffeNotFoundError
+from deepcolor.utils import (
     load_image,
     convert_to_grayscale,
     show_images,
@@ -21,7 +21,7 @@ from deepcolor.deepcolor.utils import (
 
 caffe_available = True
 try:
-    from deepcolor.deepcolor import richzhang
+    from deepcolor import richzhang
 except CaffeNotFoundError as e:
     # sys.exit(e)
     caffe_available = False
