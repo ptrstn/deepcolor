@@ -6,12 +6,46 @@ from matplotlib import pyplot
 from skimage import color
 from skimage import transform
 
+import requests
+
 
 def download_to_path(url, path):
     print(f"Downloading {url} \nto {path}\n")
     path.parent.mkdir(exist_ok=True)
     wget.download(url, str(path), bar=wget.bar_adaptive)
     print()
+
+
+def download_gdrive_to_path(gid, destination):
+    url = "https://docs.google.com/uc?export=download"
+
+    session = requests.Session()
+
+    response = session.get(url, params={'id': gid}, stream=True)
+    token = get_confirm_token(response)
+
+    if token:
+        params = {'id': gid, 'confirm': token}
+        response = session.get(url, params=params, stream=True)
+
+    save_response_content(response, destination)
+
+
+def get_confirm_token(response):
+    for key, value in response.cookies.items():
+        if key.startswith('download_warning'):
+            return value
+
+    return None
+
+
+def save_response_content(response, destination):
+    chunk_size = 32768
+
+    with open(destination, "wb") as f:
+        for chunk in response.iter_content(chunk_size):
+            if chunk: # filter out keep-alive new chunks
+                f.write(chunk)
 
 
 def load_image(path):

@@ -36,7 +36,9 @@ setup(
         "wget",
         "scipy",
         "opencv-python",
-        
+        "requests",
+        "torch",
+        "torchvision",
     ],
     python_requires=">=3.6",
     entry_points={"console_scripts": ["deepcolor=deepcolor.__main__:main"]},

@@ -3,6 +3,11 @@ import os
 import pathlib
 import sys
 
+import PIL
+import numpy as np
+
+from deepcolor import colornet
+
 os.environ["GLOG_minloglevel"] = "2"
 
 from deepcolor import __version__, colorize_image
@@ -14,10 +19,12 @@ from deepcolor.utils import (
     image_to_float32_array,
 )
 
+caffe_available = True
 try:
     from deepcolor import richzhang
 except CaffeNotFoundError as e:
-    sys.exit(e)
+    # sys.exit(e)
+    caffe_available = False
 
 from deepcolor import zeruniverse
 
@@ -30,12 +37,16 @@ def parse_arguments():
         "--version", action="version", version="%(prog)s {}".format(__version__)
     )
 
-    parser.add_argument("method", type=int, default=2, help="Zhang = 1, Zeruniverse = 2")    
     parser.add_argument("image", help="Image path")
-    parser.add_argument("gpu", type=int, default=-1, help="which GPU to use? [-1 for cpu], only used for Zeruniverse")    
+    parser.add_argument("method", help="Image colorization network", choices=['richzhang', 'colornet'], default="colornet")
 
     return parser.parse_args()
 
+
+networks = {"colornet": colornet.colorize_image}
+
+if caffe_available:
+    networks["richzhang"] = richzhang.colorize_image
 
 deepcolor_logo = f"""
    _                     _ 
@@ -58,15 +69,12 @@ def main():
 
     original_image = load_image(image_path).convert("RGB")
     grayscale_image = convert_to_grayscale(original_image)
-    if args.method == 1:
-        print("Method Zhang")
-        colorized_image = colorize_image(original_image, args.gpu, method=richzhang.colorize_image)
-    elif args.method == 2:
-        print("Method Zeruniverse")
-        colorized_image = colorize_image(original_image, args.gpu, method=zeruniverse.colorize_image_pytorch)
-    else:
-        print("No method under this number, use 1 for Zhang and 2 for Zeruniverse")
-    
+    colorized_image = colorize_image(original_image, method=networks[args.method]) #richzhang.colorize_image
+    img = PIL.Image.fromarray(np.uint8(colorized_image*255))
+    converter = PIL.ImageEnhance.Color(img)
+    img = converter.enhance(1.5)
+    img.save("output.jpg")
+
     suptitle = f"Colorized {image_path.name}"
     title = "Original image (left), Grayscale image (middle), Colorized image (right)"
 
