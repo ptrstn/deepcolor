@@ -1,43 +1,34 @@
 import numpy as np
+import torch
 from PIL import Image
 from skimage.color import lab2rgb, rgb2gray
+from torch.autograd import Variable
 from torchvision.transforms import transforms
 
-from .colornet_core import ColorNet
-from .exceptions import PyTorchNotFoundError
+from .colornet_network import ColorNet
 from .settings import (
-    PRETRAINED_COLORNET_MODEL_DOWNLOAD_ID,
-    PRETRAINED_COLORNET_MODEL_PATH,
+    COLORNET_MODEL_DOWNLOAD_ID,
+    COLORNET_MODEL_PATH,
 )
 from .utils import download_gdrive_to_path
 
-try:
-    import torch
-    from torch.autograd import Variable
-    from torchvision.utils import make_grid, save_image
-except ModuleNotFoundError as e:
-    raise PyTorchNotFoundError(str(e))
-
-has_cuda = torch.cuda.is_available()
-scale_transform = transforms.Compose(
-    [transforms.Resize(256), transforms.RandomCrop(224),]
-)
-
 
 def download_pytorch_model_if_necessary(force=False):
-    if not PRETRAINED_COLORNET_MODEL_PATH.exists() or force:
-        download_gdrive_to_path(
-            PRETRAINED_COLORNET_MODEL_DOWNLOAD_ID, PRETRAINED_COLORNET_MODEL_PATH
+    if not COLORNET_MODEL_PATH.exists() or force:
+        download_gdrive_to_path(COLORNET_MODEL_DOWNLOAD_ID, COLORNET_MODEL_PATH)
+
+
+def setup_model(pretrained_path, gpu=False):
+    color_model = ColorNet()
+
+    if gpu:
+        assert torch.cuda.is_available(), "CUDA is unavailable. Cannot use GPU mode."
+        color_model.load_state_dict(torch.load(pretrained_path, map_location="cuda:0"))
+    else:
+        color_model.load_state_dict(
+            torch.load(pretrained_path, map_location=torch.device("cpu"))
         )
 
-
-def setup_model(pretrained_path):
-    color_model = ColorNet()
-    color_model.load_state_dict(
-        torch.load(pretrained_path, map_location=torch.device("cpu"))
-    )
-    if has_cuda:
-        color_model.cuda()
     color_model.eval()
     return color_model
 
@@ -45,7 +36,9 @@ def setup_model(pretrained_path):
 def setup_image(image: Image):
     img_scale = image.copy()
     img_original = image
-    img_scale = scale_transform(img_scale)
+    img_scale = transforms.Compose(
+        [transforms.Resize(256), transforms.RandomCrop(224),]
+    )(img_scale)
 
     img_scale = np.array(img_scale)
     img_original = np.array(img_original)
@@ -57,23 +50,23 @@ def setup_image(image: Image):
     return img_original, img_scale
 
 
-def process_image(data):
+def process_image(data, gpu=False):
     w = data[0].size()[0]
     h = data[0].size()[1]
     original_img = data[0].reshape((1, w, h)).unsqueeze(1).float()
     scale_img = data[1].reshape((1, 224, 224)).unsqueeze(1).float()
-    if has_cuda:
+    if gpu:
         original_img, scale_img = original_img.cuda(), scale_img.cuda()
 
     return original_img, scale_img, w, h
 
 
-def colorize_image(image: Image, gpu=False, model=PRETRAINED_COLORNET_MODEL_PATH):
+def colorize_image(image: Image, gpu=False, model=COLORNET_MODEL_PATH):
 
     download_pytorch_model_if_necessary()
-    color_model = setup_model(model)
+    color_model = setup_model(model, gpu=gpu)
     data = setup_image(image)
-    original_img, scale_img, w, h = process_image(data)
+    original_img, scale_img, w, h = process_image(data, gpu=gpu)
 
     original_img, scale_img = Variable(original_img), Variable(scale_img)
     _, output = color_model(original_img, scale_img)

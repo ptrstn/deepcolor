@@ -14,12 +14,12 @@ from skimage import color
 
 from .exceptions import CaffeNotFoundError
 from .settings import (
-    CAFFE_MODEL_DOWNLOAD_URL,
-    CAFFE_MODEL_PATH,
-    CLUSTER_CENTERS_DOWNLOAD_URL,
-    CLUSTER_CENTERS_PATH,
-    PRETRAINED_CAFFE_MODEL_DOWNLOAD_URL,
-    PRETRAINED_MODEL_PATH,
+    RICHZHANG_CAFFE_MODEL_DOWNLOAD_URL,
+    RICHZHANG_CAFFE_MODEL_PATH,
+    RICHZHANG_CLUSTER_CENTERS_DOWNLOAD_URL,
+    RICHZHANG_CLUSTER_CENTERS_PATH,
+    RICHZHANG_PRETRAINED_MODEL_DOWNLOAD_URL,
+    RICHZHANG_PRETRAINED_MODEL_PATH,
 )
 from .utils import (
     download_to_path,
@@ -36,12 +36,16 @@ except ModuleNotFoundError as e:
 
 
 def download_caffe_model_if_necessary(force=False):
-    if not PRETRAINED_MODEL_PATH.exists() or force:
-        download_to_path(PRETRAINED_CAFFE_MODEL_DOWNLOAD_URL, PRETRAINED_MODEL_PATH)
-    if not CAFFE_MODEL_PATH.exists() or force:
-        download_to_path(CAFFE_MODEL_DOWNLOAD_URL, CAFFE_MODEL_PATH)
-    if not CLUSTER_CENTERS_PATH.exists() or force:
-        download_to_path(CLUSTER_CENTERS_DOWNLOAD_URL, CLUSTER_CENTERS_PATH)
+    if not RICHZHANG_PRETRAINED_MODEL_PATH.exists() or force:
+        download_to_path(
+            RICHZHANG_PRETRAINED_MODEL_DOWNLOAD_URL, RICHZHANG_PRETRAINED_MODEL_PATH
+        )
+    if not RICHZHANG_CAFFE_MODEL_PATH.exists() or force:
+        download_to_path(RICHZHANG_CAFFE_MODEL_DOWNLOAD_URL, RICHZHANG_CAFFE_MODEL_PATH)
+    if not RICHZHANG_CLUSTER_CENTERS_PATH.exists() or force:
+        download_to_path(
+            RICHZHANG_CLUSTER_CENTERS_DOWNLOAD_URL, RICHZHANG_CLUSTER_CENTERS_PATH
+        )
 
 
 def load_model(models_path, pretrained_path):
@@ -49,7 +53,7 @@ def load_model(models_path, pretrained_path):
     return caffe.Net(str(models_path), str(pretrained_path), caffe.TEST,)
 
 
-def load_cluster_centers(path=CLUSTER_CENTERS_PATH):
+def load_cluster_centers(path=RICHZHANG_CLUSTER_CENTERS_PATH):
     print(f"Loading cluster centers from {path}")
     return numpy.load(str(path))
 
@@ -82,7 +86,8 @@ def colorize_image(image: Image, gpu=False):
 
     pyplot.rcParams["figure.figsize"] = (12, 6)
     network = load_model(
-        models_path=CAFFE_MODEL_PATH, pretrained_path=PRETRAINED_MODEL_PATH
+        models_path=RICHZHANG_CAFFE_MODEL_PATH,
+        pretrained_path=RICHZHANG_PRETRAINED_MODEL_PATH,
     )
 
     populate_cluster_center(network)

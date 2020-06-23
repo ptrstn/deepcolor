@@ -12,10 +12,10 @@ from scipy.ndimage import zoom
 from skimage.color import rgb2yuv, yuv2rgb
 from torch.autograd import Variable
 
-from .model import generate_network
+from .zeruniverse_network import generate_network
 from .settings import (
-    PRETRAINED_PYTORCH_MODEL_DOWNLOAD_URL,
-    PRETRAINED_PYTORCH_MODEL_PATH,
+    ZERUNIVERSE_MODEL_DOWNLOAD_URL,
+    ZERUNIVERSE_MODEL_PATH,
 )
 from .utils import download_to_path
 
@@ -52,20 +52,16 @@ def colorize_image_pytorch(image: Image, gpu=False):
     if gpu:
         network = network.cuda(gpu)
         network.load_state_dict(
-            torch.load(PRETRAINED_PYTORCH_MODEL_PATH, map_location="cuda:0")
+            torch.load(ZERUNIVERSE_MODEL_PATH, map_location="cuda:0")
         )
     else:
         network.load_state_dict(
-            torch.load(PRETRAINED_PYTORCH_MODEL_PATH, map_location=torch.device("cpu"))
+            torch.load(ZERUNIVERSE_MODEL_PATH, map_location=torch.device("cpu"))
         )
 
     return generate_image(network, image, gpu)
 
 
 def download_pytorch_model_if_necessary(force=False):
-    if not PRETRAINED_PYTORCH_MODEL_PATH.exists() or force:
-        download_to_path(
-            PRETRAINED_PYTORCH_MODEL_DOWNLOAD_URL, PRETRAINED_PYTORCH_MODEL_PATH
-        )
-    # if not PYTORCH_MODEL_PATH.exists() or force:
-    # download_to_path(PYTORCH_MODEL_DOWNLOAD_URL, PYTORCH_MODEL_PATH)
+    if not ZERUNIVERSE_MODEL_PATH.exists() or force:
+        download_to_path(ZERUNIVERSE_MODEL_DOWNLOAD_URL, ZERUNIVERSE_MODEL_PATH)
