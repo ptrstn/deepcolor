@@ -6,7 +6,7 @@ from deepcolor.checks import CAFFE_IS_INSTALLED
 
 def test_colorize_image_none(farmer_image_path):
     test_image = Image.open(farmer_image_path)
-    colored_image = deepcolor.colorize_image(test_image, -1, method=None)
+    colored_image = deepcolor.colorize_image(image=test_image, method=None)
     assert colored_image is not None
     assert test_image == colored_image, "Should not be colored since method is None"
 
@@ -17,7 +17,7 @@ def test_colorize_image_richzhang(farmer_image_path):
     from deepcolor import richzhang
 
     colored_image = deepcolor.colorize_image(
-        test_image, -1, method=richzhang.colorize_image
+        test_image, method=richzhang.colorize_image
     )
     assert colored_image is not None
     assert test_image != colored_image

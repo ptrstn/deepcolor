@@ -21,11 +21,11 @@ def download_gdrive_to_path(gid, destination):
 
     session = requests.Session()
 
-    response = session.get(url, params={'id': gid}, stream=True)
+    response = session.get(url, params={"id": gid}, stream=True)
     token = get_confirm_token(response)
 
     if token:
-        params = {'id': gid, 'confirm': token}
+        params = {"id": gid, "confirm": token}
         response = session.get(url, params=params, stream=True)
 
     save_response_content(response, destination)
@@ -33,7 +33,7 @@ def download_gdrive_to_path(gid, destination):
 
 def get_confirm_token(response):
     for key, value in response.cookies.items():
-        if key.startswith('download_warning'):
+        if key.startswith("download_warning"):
             return value
 
     return None
@@ -44,7 +44,7 @@ def save_response_content(response, destination):
 
     with open(destination, "wb") as f:
         for chunk in response.iter_content(chunk_size):
-            if chunk: # filter out keep-alive new chunks
+            if chunk:  # filter out keep-alive new chunks
                 f.write(chunk)
 
 

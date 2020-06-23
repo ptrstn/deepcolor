@@ -4,6 +4,8 @@
 # This file is based on the work "Colorful Image Colorization" by Richard Zhang
 # See: https://github.com/richzhang/colorization
 
+from warnings import warn
+
 import numpy
 from PIL import Image
 from matplotlib import pyplot
@@ -72,7 +74,10 @@ def predict_a_b_channels(network):
     return network.blobs["class8_ab"].data[0, :, :, :].transpose((1, 2, 0))
 
 
-def colorize_image(image: Image, _):
+def colorize_image(image: Image, gpu=False):
+    if gpu:
+        warn("GPU Mode currently unsupported. Falling back to CPU Mode.")
+
     download_caffe_model_if_necessary()
 
     pyplot.rcParams["figure.figsize"] = (12, 6)

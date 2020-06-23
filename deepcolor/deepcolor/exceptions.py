@@ -27,9 +27,7 @@ class PyTorchNotFoundError(ModuleNotFoundError):
         else:
             self.message = None
 
-        self.instructions = (
-            "Pytorch is not installed. Unable to colorize picture.\n"
-        )
+        self.instructions = "Pytorch is not installed. Unable to colorize picture.\n"
 
     def __str__(self):
         if self.message:

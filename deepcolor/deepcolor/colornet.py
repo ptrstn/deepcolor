@@ -1,25 +1,15 @@
+import numpy as np
+from PIL import Image
+from skimage.color import lab2rgb, rgb2gray
 from torchvision.transforms import transforms
 
+from .colornet_core import ColorNet
 from .exceptions import PyTorchNotFoundError
 from .settings import (
-    CLUSTER_CENTERS_DOWNLOAD_URL,
-    CLUSTER_CENTERS_PATH,
     PRETRAINED_COLORNET_MODEL_DOWNLOAD_ID,
     PRETRAINED_COLORNET_MODEL_PATH,
 )
-
-from .utils import (
-    download_gdrive_to_path,
-    extract_l_channel,
-    image_to_float32_array,
-    resize_image,
-    float32_array_to_image,
-)
-
-from skimage.color import lab2rgb, rgb2gray
-from .colornet_core import ColorNet
-from PIL import Image
-import numpy as np
+from .utils import download_gdrive_to_path
 
 try:
     import torch
@@ -29,20 +19,23 @@ except ModuleNotFoundError as e:
     raise PyTorchNotFoundError(str(e))
 
 has_cuda = torch.cuda.is_available()
-scale_transform = transforms.Compose([
-    transforms.Resize(256),
-    transforms.RandomCrop(224),
-])
+scale_transform = transforms.Compose(
+    [transforms.Resize(256), transforms.RandomCrop(224),]
+)
 
 
 def download_pytorch_model_if_necessary(force=False):
     if not PRETRAINED_COLORNET_MODEL_PATH.exists() or force:
-        download_gdrive_to_path(PRETRAINED_COLORNET_MODEL_DOWNLOAD_ID, PRETRAINED_COLORNET_MODEL_PATH)
+        download_gdrive_to_path(
+            PRETRAINED_COLORNET_MODEL_DOWNLOAD_ID, PRETRAINED_COLORNET_MODEL_PATH
+        )
 
 
 def setup_model(pretrained_path):
     color_model = ColorNet()
-    color_model.load_state_dict(torch.load(pretrained_path, map_location=torch.device('cpu')))
+    color_model.load_state_dict(
+        torch.load(pretrained_path, map_location=torch.device("cpu"))
+    )
     if has_cuda:
         color_model.cuda()
     color_model.eval()
@@ -75,12 +68,10 @@ def process_image(data):
     return original_img, scale_img, w, h
 
 
-def colorize_image(image: Image, args=None):
-    if args is None:
-        args = {"model": PRETRAINED_COLORNET_MODEL_PATH}
+def colorize_image(image: Image, gpu=False, model=PRETRAINED_COLORNET_MODEL_PATH):
 
     download_pytorch_model_if_necessary()
-    color_model = setup_model(args.get("model"))
+    color_model = setup_model(model)
     data = setup_image(image)
     original_img, scale_img, w, h = process_image(data)
 
@@ -94,4 +85,3 @@ def colorize_image(image: Image, args=None):
     img = img.astype(np.float64)
     img = lab2rgb(img)
     return img
-
