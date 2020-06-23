@@ -50,6 +50,7 @@ def colorize_image_pytorch(image: Image, gpu=False):
     network = generate_network()
 
     if gpu:
+        assert torch.cuda.is_available(), "CUDA is unavailable. Cannot use GPU mode."
         network = network.cuda(gpu)
         network.load_state_dict(
             torch.load(ZERUNIVERSE_MODEL_PATH, map_location="cuda:0")

@@ -25,8 +25,10 @@ def parse_arguments():
     parser.add_argument("image", help="Image path")
 
     parser.add_argument(
-        "-m", "--method", default="richzhang", help="Colorization method"
+        "-m", "--method", default="colornet", help="Colorization method"
     )
+
+    parser.add_argument("--gpu", action="store_true", help="Colorization method")
 
     return parser.parse_args()
 
@@ -65,10 +67,13 @@ def main():
     image_path = pathlib.Path(args.image)
     method_name = args.method
     colorization_method = get_colorization_method(method_name)
+    gpu = args.gpu
 
     original_image = load_image(image_path).convert("RGB")
     grayscale_image = convert_to_grayscale(original_image)
-    colorized_image = colorize_image(original_image, method=colorization_method)
+    colorized_image = colorize_image(
+        original_image, method=colorization_method, gpu=gpu
+    )
 
     suptitle = f"Colorized {image_path.name} ({method_name})"
     title = "Original image (left), Grayscale image (middle), Colorized image (right)"
