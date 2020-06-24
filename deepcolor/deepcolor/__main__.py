@@ -18,7 +18,7 @@ from .utils import (
 
 def parse_arguments():
     parser = argparse.ArgumentParser(
-        description="deepcoor - A tool to colorize black and white pictures",
+        description="deepcolor - A tool to colorize black and white pictures",
         formatter_class=lambda prog: argparse.HelpFormatter(
             prog, max_help_position=100
         ),
@@ -33,8 +33,8 @@ def parse_arguments():
     parser.add_argument(
         "--method",
         nargs="+",
-        help=f"Colorization method to use. Available methods: {', '.join(available_method_names())}",
-        default=["colornet"]
+        help=f"Colorization methods to use. Available methods: {', '.join(available_method_names())}",
+        default=["colornet"],
     )
 
     parser.add_argument(
@@ -89,12 +89,16 @@ def main():
 
         colored_images[method_name] = colorized_image
 
-        colorized_filename = f"colorized_{image_path.stem}_{method_name}{image_path.suffix}"
+        colorized_filename = (
+            f"colorized_{image_path.stem}_{method_name}{image_path.suffix}"
+        )
         print(f"Saving colorized image as {colorized_filename} \n")
         colorized_image.save(colorized_filename)
 
     suptitle = f"Colorized {image_path.name} using {', '.join(colored_images.keys())}"
-    colored_image_titles = [f"Colorized image ({method})" for method in colored_images.keys()]
+    colored_image_titles = [
+        f"Colorized image ({method})" for method in colored_images.keys()
+    ]
     title = f"Original image (left), Grayscale image (second), {', '.join(colored_image_titles)}"
 
     images = [original_image, grayscale_image, *list(colored_images.values())]

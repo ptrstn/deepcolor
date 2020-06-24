@@ -1,5 +1,5 @@
-from deepcolor import colornet, zeruniverse
-from deepcolor.exceptions import CaffeNotFoundError
+from . import colornet, zeruniverse
+from .exceptions import CaffeNotFoundError
 
 
 def get_colorization_method(method_name):
