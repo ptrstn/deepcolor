@@ -10,7 +10,7 @@ from .settings import (
     COLORNET_MODEL_DOWNLOAD_ID,
     COLORNET_MODEL_PATH,
 )
-from .utils import download_gdrive_to_path
+from .utils import download_gdrive_to_path, float32_array_to_image
 
 
 def download_pytorch_model_if_necessary(force=False):
@@ -75,6 +75,7 @@ def colorize_image(image: Image, gpu=False, model=COLORNET_MODEL_PATH):
     img = color_img[0]
     img[:, :, 0:1] = img[:, :, 0:1] * 100
     img[:, :, 1:3] = img[:, :, 1:3] * 255 - 128
-    img = img.astype(np.float64)
+
+    img = img.astype(np.float32)
     img = lab2rgb(img)
-    return img
+    return float32_array_to_image(img)

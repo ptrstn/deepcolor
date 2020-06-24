@@ -1,10 +1,13 @@
 import argparse
 import pathlib
-import sys
 
-from . import __version__, colorize_image, zeruniverse
-from . import colornet
-from .exceptions import CaffeNotFoundError
+from deepcolor.methods import (
+    get_colorization_method,
+    available_method_names,
+    available_methods,
+)
+
+from . import __version__, colorize_image
 from .utils import (
     load_image,
     convert_to_grayscale,
@@ -15,7 +18,10 @@ from .utils import (
 
 def parse_arguments():
     parser = argparse.ArgumentParser(
-        description="deepcoor - A tool to colorize black and white pictures"
+        description="deepcoor - A tool to colorize black and white pictures",
+        formatter_class=lambda prog: argparse.HelpFormatter(
+            prog, max_help_position=100
+        ),
     )
 
     parser.add_argument(
@@ -25,10 +31,15 @@ def parse_arguments():
     parser.add_argument("image", help="Image path")
 
     parser.add_argument(
-        "-m", "--method", default="colornet", help="Colorization method"
+        "--method",
+        nargs="+",
+        help=f"Colorization method to use. Available methods: {', '.join(available_method_names())}",
+        default=["colornet"]
     )
 
-    parser.add_argument("--gpu", action="store_true", help="Colorization method")
+    parser.add_argument(
+        "--gpu", action="store_true", help="Run in CUDA mode rather than CPU"
+    )
 
     return parser.parse_args()
 
@@ -46,18 +57,14 @@ def print_logo():
     print(deepcolor_logo)
 
 
-def get_colorization_method(method_name):
-    if method_name == "richzhang":
-        try:
-            from deepcolor import richzhang
-        except CaffeNotFoundError as e:
-            print(f"Unable to colorize with method {method_name}")
-            sys.exit(e)
-        return richzhang.colorize_image
-    return {
-        "colornet": colornet.colorize_image,
-        "zeruniverse": zeruniverse.colorize_image_pytorch,
-    }.get(method_name)
+def print_selected_method(method_name):
+    print(f"Colorizing image using {method_name} strategy.")
+    method_entry = [
+        method for method in available_methods() if method["method_name"] == method_name
+    ][0]
+    for key, value in method_entry.items():
+        print(f"{key + ':':15}{value}")
+    print()
 
 
 def main():
@@ -65,26 +72,36 @@ def main():
     print_logo()
 
     image_path = pathlib.Path(args.image)
-    method_name = args.method
-    colorization_method = get_colorization_method(method_name)
     gpu = args.gpu
+
+    colored_images = {}
 
     original_image = load_image(image_path).convert("RGB")
     grayscale_image = convert_to_grayscale(original_image)
-    colorized_image = colorize_image(
-        original_image, method=colorization_method, gpu=gpu
-    )
 
-    suptitle = f"Colorized {image_path.name} ({method_name})"
-    title = "Original image (left), Grayscale image (middle), Colorized image (right)"
+    for method_name in args.method:
+        print_selected_method(method_name)
+        colorization_method = get_colorization_method(method_name)
+
+        colorized_image = colorize_image(
+            original_image, method=colorization_method, gpu=gpu
+        )
+
+        colored_images[method_name] = colorized_image
+
+        colorized_filename = f"colorized_{image_path.stem}_{method_name}{image_path.suffix}"
+        print(f"Saving colorized image as {colorized_filename} \n")
+        colorized_image.save(colorized_filename)
+
+    suptitle = f"Colorized {image_path.name} using {', '.join(colored_images.keys())}"
+    colored_image_titles = [f"Colorized image ({method})" for method in colored_images.keys()]
+    title = f"Original image (left), Grayscale image (second), {', '.join(colored_image_titles)}"
+
+    images = [original_image, grayscale_image, *list(colored_images.values())]
+    float32_images = [image_to_float32_array(image) for image in images]
 
     show_images(
-        image_to_float32_array(original_image),
-        image_to_float32_array(grayscale_image),
-        image_to_float32_array(colorized_image),
-        padding=True,
-        suptitle=suptitle,
-        title=title,
+        *float32_images, padding=True, suptitle=suptitle, title=title,
     )
 
 
