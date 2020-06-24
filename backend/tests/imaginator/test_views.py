@@ -14,13 +14,17 @@ def test_image_upload(test_image_path):
 
     assert DeepColorResult.objects.count() == 0
 
-    response = client.post(url, {"file": file}, format="multipart")
+    response = client.post(
+        url, {"file": file, "method": "richzhang"}, format="multipart"
+    )
     assert response.status_code == 201
     assert "id" in response.data
     assert DeepColorResult.objects.count() == 1
 
     file = open(test_image_path, "rb")
-    response = client.post(url, {"file": file}, format="multipart")
+    response = client.post(
+        url, {"file": file, "method": "colornet"}, format="multipart"
+    )
     assert response.status_code == 201
     assert "id" in response.data
     assert DeepColorResult.objects.count() == 2
@@ -52,7 +56,9 @@ def test_image_upload_when_caffe_not_installed(test_image_path):
     url = "/api/v1/images/"
 
     assert DeepColorResult.objects.count() == 0
-    response = client.post(url, {"file": file}, format="multipart")
+    response = client.post(
+        url, {"file": file, "method": "richzhang"}, format="multipart"
+    )
     assert response.status_code == 503
     assert response.data is None
     assert DeepColorResult.objects.count() == 0
