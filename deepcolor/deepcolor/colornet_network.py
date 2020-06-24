@@ -1,3 +1,9 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+# This file is based on the work "colorNet-pytorch" by wushufan
+# See: https://github.com/shufanwu/colorNet-pytorch
+
 import torch.nn as nn
 import torch.nn.functional as F
 import torch

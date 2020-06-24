@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# This file is based on the work "neural-colorization "neural-colorization" by Jeffery (Zeyu) Zhao
+# This file is based on the work "neural-colorization" by Jeffery (Zeyu) Zhao
 # See: https://github.com/zeruniverse/neural-colorization
 
 import cv2
