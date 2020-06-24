@@ -3,7 +3,7 @@ from io import BytesIO
 import deepcolor
 from PIL import Image
 from deepcolor.exceptions import CaffeNotFoundError
-from deepcolor.methods import available_methods, get_colorization_method
+from deepcolor.strategies import get_colorization_strategy, available_strategies
 from django.core.files import File
 from django.http import Http404, JsonResponse
 from rest_framework import status, serializers
@@ -16,16 +16,18 @@ from .models import DeepColorResult
 def create_deep_image_result(data):
     # https://stackoverflow.com/a/49065291/9907540
     file = data["file"]
-    method_name = data["method"]
+    strategy_name = data["strategy"]
 
     image_file_name = file.name
     original_image = Image.open(file)
 
-    colorization_method = get_colorization_method(method_name)
+    colorization_strategy = get_colorization_strategy(strategy_name)
 
-    colored_image = deepcolor.colorize_image(original_image, method=colorization_method)
+    colored_image = deepcolor.colorize_image(
+        original_image, strategy=colorization_strategy
+    )
 
-    instance = DeepColorResult(original=file, method=method_name)
+    instance = DeepColorResult(original=file, strategy=strategy_name)
     colorized_bytes = BytesIO()
     colored_image.save(colorized_bytes, "JPEG")
     instance.colored.save(
@@ -44,12 +46,12 @@ class DeepColorResultList(APIView):
 
     class InputSerializer(serializers.Serializer):
         file = serializers.FileField()
-        method = serializers.CharField(max_length=50)
+        strategy = serializers.CharField(max_length=20)
 
     class ResultSerializer(serializers.ModelSerializer):
         class Meta:
             model = DeepColorResult
-            fields = ("id", "original", "colored", "method")
+            fields = ("id", "original", "colored", "strategy")
 
     def get(self, request, format=None):
         images = DeepColorResult.objects.all()
@@ -75,7 +77,7 @@ class DeepColorResultDetail(APIView):
     class DeepColorResultSerializer(serializers.ModelSerializer):
         class Meta:
             model = DeepColorResult
-            fields = ("id", "original", "colored", "method")
+            fields = ("id", "original", "colored", "strategy")
 
     def get_object(self, pk):
         try:
@@ -94,13 +96,13 @@ class DeepColorResultDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-def methods(request):
-    colorization_methods = available_methods()
-    methods_dict = {
-        "models": [
-            {"name": method["short"], "var": method["method_name"]}
-            for method in colorization_methods
+def strategies(request):
+    colorization_strategies = available_strategies()
+    strategies_dict = {
+        "strategies": [
+            {"name": strategy["short"], "var": strategy["strategy_name"]}
+            for strategy in colorization_strategies
         ]
     }
 
-    return JsonResponse(methods_dict, safe=False)
+    return JsonResponse(strategies_dict, safe=False)

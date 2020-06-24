@@ -1,10 +1,10 @@
 from PIL import Image
 
 
-def colorize_image(image: Image, method, gpu=False) -> Image:
-    if not method:
+def colorize_image(image: Image, strategy, gpu=False) -> Image:
+    if not strategy:
         print(
-            "Warning: No colorization method was specified. Returning original image."
+            "Warning: No colorization strategy was specified. Returning original image."
         )
         return image
-    return method(image, gpu)
+    return strategy(image, gpu)
