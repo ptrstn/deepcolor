@@ -23,6 +23,9 @@ RICHZHANG_CLUSTER_CENTERS_PATH = Path(RESOURCES_PATH, "pts_in_hull.npy")
 # ---------
 COLORNET_MODEL_DOWNLOAD_ID = "0B6WuMuYfgb4XblE4c3N2RUJQcFU"
 COLORNET_MODEL_DOWNLOAD_URL = "https://drive.google.com/uc?export=download&id="
+COLORNET_MODEL_DOWNLOAD_URL2 = (
+    "https://cloud.magical.rocks/f/7d86125f7fdf4140b947/?dl=1"
+)
 COLORNET_MODEL_PATH = Path(
     RESOURCES_PATH, "complete/alt_05_model/colornet_params_ep_1.pkl"
 )

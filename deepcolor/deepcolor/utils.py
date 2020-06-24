@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import numpy
 import skimage
 import wget
@@ -42,6 +44,7 @@ def get_confirm_token(response):
 def save_response_content(response, destination):
     chunk_size = 32768
 
+    Path(destination.parent).mkdir(parents=True, exist_ok=True)
     with open(destination, "wb") as f:
         for chunk in response.iter_content(chunk_size):
             if chunk:  # filter out keep-alive new chunks
