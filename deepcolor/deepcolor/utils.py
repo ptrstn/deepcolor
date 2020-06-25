@@ -61,7 +61,8 @@ def convert_to_grayscale(image):
     lab_image = color.rgb2lab(rgb_image)
     lab_image = lab_image.copy()
     lab_image[:, :, 1:] = 0
-    return color.lab2rgb(lab_image)
+    grayscale_rgb_image = color.lab2rgb(lab_image)
+    return float32_array_to_image(grayscale_rgb_image)
 
 
 def extract_l_channel(rgb_image):
