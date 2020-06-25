@@ -219,6 +219,29 @@ tests/test_utils.py ......                                                      
 ======================================= 13 passed in 6.41s =======================================
 ```
 
+### Training
+
+There are multiple ways of training for the different Networks available. As the colornet is the only Network in this Project which uses our own trained model we will only describe this method of training
+
+#### Colornet
+You can train the network with the provided train.py. The following graph shows how the network performs with Adadelta optimizer. We weighted the labels with ![formula](https://render.githubusercontent.com/render/math?math=\frac{1}{300}) to the overall loss of the network. 
+
+![image](https://user-images.githubusercontent.com/6242238/85754923-c7a29400-b70d-11ea-8da1-0d03d29afbf7.png)
+
+You can also use AdamW Optimizer with amsgrad. As a learning rate we used 0.0001 for a good learning performance. We changed the weight of the labels to ![formula](https://render.githubusercontent.com/render/math?math=\frac{1}{350}) which also performs good. The Adadelta optimizer is still the prefered method, as this will deliver overall better results, but the AdamW Optimized Network can outperform the Adadelta Network in some cases (but still, the opposite is more common). One example where this is the case can be seen below (left: AdamW, right: Adadelta):
+
+![image](https://user-images.githubusercontent.com/6242238/85759658-6e3c6400-b711-11ea-940d-5cec2b9d82db.png)
+![image](https://user-images.githubusercontent.com/6242238/85759697-74324500-b711-11ea-90e3-10270a565042.png)
+
+An example where Adadelta is better can be seen below:
+
+![image](https://user-images.githubusercontent.com/6242238/85761055-b0b27080-b712-11ea-99f4-101e651cd8f6.png)
+![image](https://user-images.githubusercontent.com/6242238/85761028-aabc8f80-b712-11ea-9a94-a6a3506d7252.png)
+
+The full formula for the loss is: ![formula](https://render.githubusercontent.com/render/math?math=\frac{(a%20-%20b)^{2}}{|b|}%20%2b%20\frac{1}{300}%20*%20l_{label})
+After Around 26 Epochs we reach an acceptable image colorization quality. This took around 1 Week to train on one GTX1080Ti.
+
+
 ## Credits:
 
 - http://richzhang.github.io/colorization/
