@@ -238,7 +238,7 @@ An example where Adadelta is better can be seen below:
 ![image](https://user-images.githubusercontent.com/6242238/85761055-b0b27080-b712-11ea-99f4-101e651cd8f6.png)
 ![image](https://user-images.githubusercontent.com/6242238/85761028-aabc8f80-b712-11ea-9a94-a6a3506d7252.png)
 
-The full formula for the loss is: ![formula](https://render.githubusercontent.com/render/math?math=\frac{(a%20-%20b)^{2}}{|b|}%20%2b%20\frac{1}{300}%20*%20l_{label})
+The full formula for the loss is: ![formula](https://render.githubusercontent.com/render/math?math=\frac{(a%20-%20b)^{2}}{|b|}%20%2b%20\frac{1}{300}%20*%20l_{label}). Where a is the original image, b the colorized output and ![formula](https://render.githubusercontent.com/render/math?math=l_{label}) the cross entropy loss of the label.
 After Around 26 Epochs we reach an acceptable image colorization quality. This took around 1 Week to train on one GTX1080Ti.
 
 
