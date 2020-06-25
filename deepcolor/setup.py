@@ -41,5 +41,14 @@ setup(
         "torchvision",
     ],
     python_requires=">=3.6",
+    license='GPLv3',
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+        'Operating System :: OS Independent',
+        'Intended Audience :: Science/Research',
+        'Topic :: Education',
+        'Topic :: Scientific/Engineering :: Artificial Intelligence',
+    ],
     entry_points={"console_scripts": ["deepcolor=deepcolor.__main__:main"]},
 )
