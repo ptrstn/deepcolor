@@ -22,7 +22,7 @@ pip install deepcolor/
 
 The first colorization stragety used by this project was based on [Colorful Image Colorization by Richard Zhang](https://github.com/richzhang/colorization). 
 
-You colorize in image using this method by passing by using the ```richzhang``` module:
+You can colorize an image using this method by passing the ```richzhang``` module:
 
 #### Example:
 
@@ -81,8 +81,8 @@ colorized_image.show()
 
 ## Command line tool
 
-You can also color your images without using python code. 
-For this purpose the ```deepcolor``` command line tool will be installed along with the project itself.
+You can also colorize your images without using python code. 
+For this purpose the ```deepcolor``` command line tool is installed together with the project itself.
 All colorized images will be saved as ```colorized_<old_filename>_strategy.<suffix>```
 
 ### Usage
@@ -104,7 +104,7 @@ optional arguments:
 
 ### Example 1
 
-This command colorizes the image located in ```data/hill.jpeg``` using the ```colornet``` strategy
+This command colorizes the image located in ```data/hill.jpeg``` using the ```colornet``` strategy.
 
 ```bash
 deepcolor data/hill.jpeg --strategy colornet
