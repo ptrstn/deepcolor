@@ -1,6 +1,6 @@
 # deepcolor
 
-A tool to colorize black and white pictures, based on [Colorful Image Colorization by Richard Zhang](https://github.com/richzhang/colorization), and [neural-colorization by Jeffery (Zeyu) Zhao](https://github.com/zeruniverse/neural-colorization).
+A tool to colorize black and white pictures, based on [Colorful Image Colorization by Richard Zhang](https://github.com/richzhang/colorization), [Let there be Color!" by Satoshi Iizuka](http://iizuka.cs.tsukuba.ac.jp/projects/colorization/en/) and [neural-colorization by Jeffery (Zeyu) Zhao](https://github.com/zeruniverse/neural-colorization).
 
 ## Prerequisites
 
