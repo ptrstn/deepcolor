@@ -13,32 +13,16 @@ import requests
 
 def download_to_path(url, path):
     print(f"Downloading {url} \nto {path}\n")
-    path.parent.mkdir(exist_ok=True)
+    path.parent.mkdir(parents=True, exist_ok=True)
     wget.download(url, str(path), bar=wget.bar_adaptive)
     print()
 
 
-def download_gdrive_to_path(gid, destination):
-    url = "https://docs.google.com/uc?export=download"
-
-    session = requests.Session()
-
-    response = session.get(url, params={"id": gid}, stream=True)
-    token = get_confirm_token(response)
-
-    if token:
-        params = {"id": gid, "confirm": token}
-        response = session.get(url, params=params, stream=True)
-
-    save_response_content(response, destination)
-
-
-def get_confirm_token(response):
-    for key, value in response.cookies.items():
-        if key.startswith("download_warning"):
-            return value
-
-    return None
+def download_to_path_with_requests(url, path):
+    print(f"Downloading {url} \nto {path}\n")
+    response = requests.get(url, stream=True)
+    save_response_content(response, path)
+    print()
 
 
 def save_response_content(response, destination):
