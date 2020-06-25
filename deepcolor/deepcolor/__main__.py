@@ -97,9 +97,7 @@ def main():
         print(f"Saving colorized image as {colorized_filename} \n")
         colorized_image.save(colorized_filename)
 
-    grayscaled_filename = (
-        f"colorized_{image_path.stem}_grayscale{image_path.suffix}"
-    )
+    grayscaled_filename = f"colorized_{image_path.stem}_grayscale{image_path.suffix}"
     print(f"Saving grayscale image as {grayscaled_filename} \n")
     grayscale_image.save(grayscaled_filename)
 
