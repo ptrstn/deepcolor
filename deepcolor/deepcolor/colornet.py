@@ -58,7 +58,7 @@ def process_image(data, gpu=False):
     return original_img, scale_img, w, h
 
 
-def colorize_image(image: Image, gpu=False, model=COLORNET_MODEL_PATH):
+def colorize_image(image: Image, gpu=False, model=COLORNET_MODEL_PATH) -> Image:
     download_colornet_model_if_necessary()
     color_model = setup_model(model, gpu=gpu)
     data = setup_image(image)

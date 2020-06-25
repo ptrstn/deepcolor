@@ -12,7 +12,7 @@ def get_colorization_strategy(strategy_name):
         return richzhang.colorize_image
     return {
         "colornet": colornet.colorize_image,
-        "zeruniverse": zeruniverse.colorize_image_pytorch,
+        "zeruniverse": zeruniverse.colorize_image,
     }.get(strategy_name)
 
 

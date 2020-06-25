@@ -44,7 +44,7 @@ def generate_image(network, input, gpu=False):
     return output_image
 
 
-def colorize_image_pytorch(image: Image, gpu=False):
+def colorize_image(image: Image, gpu=False) -> Image:
     download_pytorch_model_if_necessary()
 
     network = generate_network()

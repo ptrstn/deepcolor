@@ -50,7 +50,7 @@ def float32_array_to_image(array: numpy.ndarray) -> Image:
 
 
 def convert_to_grayscale(image):
-    print(f"Converting {image.format} image with mode {image.mode} to grayscale")
+    print(f"Converting {image.format} image with mode {image.mode} to grayscale\n")
     if image.mode == "RGB":
         rgb_image = image
     elif image.mode == "L":
@@ -132,4 +132,9 @@ def show_images(*images, title=None, suptitle=None, padding=False):
     if title:
         pyplot.title(title)
     pyplot.axis("off")
+
+    pyplot.subplots_adjust(top=1, bottom=0, right=1, left=0, hspace=0, wspace=0)
+    pyplot.margins(0, 0)
+    pyplot.gca().xaxis.set_major_locator(pyplot.NullLocator())
+    pyplot.gca().yaxis.set_major_locator(pyplot.NullLocator())
     pyplot.show()
