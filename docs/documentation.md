@@ -10,11 +10,25 @@ This project can be extended by further colorization strategies, because an inte
 
 ## Concept
 
-Describe how the colorization works
+![RGB to L*a*b* color space conversion](images/rgb_lab.png)
 
-- Colorspaces
-    - RGB
-    - L*a*b*
+Grayscale images usually only have pixel values in the L* (Lightness) channel. 
+This property can be exploited to use a deep neural network for coloring images.
+First, images that are usually in RGB mode must be converted to the L*a*b* color space. 
+Then the L* channel can be extracted and fed into the neural network.
+
+In the L*a*b* color space the color of an pixel is determined by three values: 
+
+ - L* for the lightness from black (0) to white (100) 
+ - a* from green (−) to red (+) 
+ - b* from blue (−) to yellow (+)
+
+Given the L* channel of an image and a convolutional neural network, the a* and b* color channel values should therefore be predicted.
+All three channels of all pixels combined result in the colored image.
+
+![Neural network of image colorization by Richard Zhang](images/rgb_lab.png)
+
+This also means that any existing color photo can be used to train the neural network by simply converting it to the appropriate color space and using the channels as features and labels.
 
 ## Architecture
 
@@ -24,7 +38,7 @@ This package also provides a command line client that allows the colorization of
 
 The ```deepcolor``` package is used by the ```backend```, which provides a REST interface that is used by ```frontend```.
 
-(image of architecture)
+![Colorized acker using richzhang strategy](images/architecture.png)
 
 ### ```deepcolor```
 
