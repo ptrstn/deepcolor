@@ -7,5 +7,5 @@ urlpatterns = [
     path(
         "images/<int:pk>/", views.DeepColorResultDetail.as_view(), name="image_detail"
     ),
-    path("methods/", views.methods, name="methods"),
+    path("strategies/", views.strategies, name="strategies"),
 ]

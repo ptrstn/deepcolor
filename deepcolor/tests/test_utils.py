@@ -1,3 +1,4 @@
+import math
 import pathlib
 
 import numpy
@@ -29,8 +30,8 @@ def test_convert_to_grayscale_rgb(lincoln_image_path):
     image_gray = convert_to_grayscale(image)
     image_gray_lab = color.rgb2lab(image_gray)
 
-    assert round(image_gray_lab[0][0][0], 2) == round(
-        image_lab[0][0][0], 2
+    assert (
+        abs(image_gray_lab[0][0][0] - image_lab[0][0][0]) < 1
     ), "L channel should stay the same"
     assert round(image_gray_lab[0][0][1], 2) == 0, "a Channel should be zero"
     assert round(image_gray_lab[0][0][2], 2) == 0, "b Channel should be zero"
@@ -52,11 +53,11 @@ def test_convert_to_grayscale_l(farmer_image_path):
     image_gray = convert_to_grayscale(image)
     image_gray_lab = color.rgb2lab(image_gray)
 
-    assert round(image_gray_lab[69][42][0], 2) == round(
-        image_lab[69][42][0], 2
+    assert (
+        abs(image_gray_lab[69][42][0] - image_lab[69][42][0]) < 1
     ), "L channel should stay the same"
-    assert round(image_gray_lab[69][42][1], 2) == 0, "a Channel should stay zero"
-    assert round(image_gray_lab[69][42][2], 2) == 0, "b Channel should stay zero"
+    assert round(image_gray_lab[69][42][1], 2) < 1, "a Channel should stay zero"
+    assert round(image_gray_lab[69][42][2], 2) < 1, "b Channel should stay zero"
 
     with pytest.raises(ValueError):
         convert_to_grayscale(image.convert(mode="CMYK"))

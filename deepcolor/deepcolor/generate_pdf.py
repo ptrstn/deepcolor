@@ -39,7 +39,7 @@ for folder in [
                 original_image.thumbnail((1024, 1024))
                 colorized_image = colorize_image(
                     original_image,
-                    method=colornet.colorize_image,
+                    strategy=colornet.colorize_image,
                     args={"model": model_path},
                 )
                 img = PIL.Image.fromarray(np.uint8(colorized_image * 255))

@@ -6,16 +6,13 @@ from torch.autograd import Variable
 from torchvision.transforms import transforms
 
 from .colornet_network import ColorNet
-from .settings import (
-    COLORNET_MODEL_DOWNLOAD_ID,
-    COLORNET_MODEL_PATH,
-)
-from .utils import download_gdrive_to_path, float32_array_to_image
+from .settings import COLORNET_MODEL_DOWNLOAD_URL, COLORNET_MODEL_PATH
+from .utils import float32_array_to_image, download_to_path_with_requests
 
 
-def download_pytorch_model_if_necessary(force=False):
+def download_colornet_model_if_necessary(force=False):
     if not COLORNET_MODEL_PATH.exists() or force:
-        download_gdrive_to_path(COLORNET_MODEL_DOWNLOAD_ID, COLORNET_MODEL_PATH)
+        download_to_path_with_requests(COLORNET_MODEL_DOWNLOAD_URL, COLORNET_MODEL_PATH)
 
 
 def setup_model(pretrained_path, gpu=False):
@@ -61,9 +58,8 @@ def process_image(data, gpu=False):
     return original_img, scale_img, w, h
 
 
-def colorize_image(image: Image, gpu=False, model=COLORNET_MODEL_PATH):
-
-    download_pytorch_model_if_necessary()
+def colorize_image(image: Image, gpu=False, model=COLORNET_MODEL_PATH) -> Image:
+    download_colornet_model_if_necessary()
     color_model = setup_model(model, gpu=gpu)
     data = setup_image(image)
     original_img, scale_img, w, h = process_image(data, gpu=gpu)

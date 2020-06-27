@@ -1,10 +1,10 @@
 import argparse
 import pathlib
 
-from deepcolor.methods import (
-    get_colorization_method,
-    available_method_names,
-    available_methods,
+from deepcolor.strategies import (
+    get_colorization_strategy,
+    available_strategy_names,
+    available_strategies,
 )
 
 from . import __version__, colorize_image
@@ -31,9 +31,9 @@ def parse_arguments():
     parser.add_argument("image", help="Image path")
 
     parser.add_argument(
-        "--method",
+        "--strategy",
         nargs="+",
-        help=f"Colorization methods to use. Available methods: {', '.join(available_method_names())}",
+        help=f"Colorization strategies to use. Available strategies: {', '.join(available_strategy_names())}",
         default=["colornet"],
     )
 
@@ -57,12 +57,14 @@ def print_logo():
     print(deepcolor_logo)
 
 
-def print_selected_method(method_name):
-    print(f"Colorizing image using {method_name} strategy.")
-    method_entry = [
-        method for method in available_methods() if method["method_name"] == method_name
+def print_selected_strategy(strategy_name):
+    print(f"Colorizing image using {strategy_name} strategy.")
+    strategy_entry = [
+        strategy
+        for strategy in available_strategies()
+        if strategy["strategy_name"] == strategy_name
     ][0]
-    for key, value in method_entry.items():
+    for key, value in strategy_entry.items():
         print(f"{key + ':':15}{value}")
     print()
 
@@ -79,25 +81,29 @@ def main():
     original_image = load_image(image_path).convert("RGB")
     grayscale_image = convert_to_grayscale(original_image)
 
-    for method_name in args.method:
-        print_selected_method(method_name)
-        colorization_method = get_colorization_method(method_name)
+    for strategy_name in args.strategy:
+        print_selected_strategy(strategy_name)
+        colorization_strategy = get_colorization_strategy(strategy_name)
 
         colorized_image = colorize_image(
-            original_image, method=colorization_method, gpu=gpu
+            original_image, strategy=colorization_strategy, gpu=gpu
         )
 
-        colored_images[method_name] = colorized_image
+        colored_images[strategy_name] = colorized_image
 
         colorized_filename = (
-            f"colorized_{image_path.stem}_{method_name}{image_path.suffix}"
+            f"colorized_{image_path.stem}_{strategy_name}{image_path.suffix}"
         )
         print(f"Saving colorized image as {colorized_filename} \n")
         colorized_image.save(colorized_filename)
 
+    grayscaled_filename = f"colorized_{image_path.stem}_grayscale{image_path.suffix}"
+    print(f"Saving grayscale image as {grayscaled_filename} \n")
+    grayscale_image.save(grayscaled_filename)
+
     suptitle = f"Colorized {image_path.name} using {', '.join(colored_images.keys())}"
     colored_image_titles = [
-        f"Colorized image ({method})" for method in colored_images.keys()
+        f"Colorized image ({strategy})" for strategy in colored_images.keys()
     ]
     title = f"Original image (left), Grayscale image (second), {', '.join(colored_image_titles)}"
 
