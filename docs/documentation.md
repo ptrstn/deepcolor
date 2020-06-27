@@ -26,7 +26,7 @@ In the L*a*b* color space the color of an pixel is determined by three values:
 Given the L* channel of an image and a convolutional neural network, the a* and b* color channel values should therefore be predicted.
 All three channels of all pixels combined result in the colored image.
 
-![Neural network of image colorization by Richard Zhang](images/rgb_lab.png)
+![Neural network of image colorization by Richard Zhang](images/net_diagram.png)
 
 This also means that any existing color photo can be used to train the neural network by simply converting it to the appropriate color space and using the channels as features and labels.
 
