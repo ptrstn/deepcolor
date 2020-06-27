@@ -1,6 +1,7 @@
 import numpy as np
 import torch
 from PIL import Image
+from PIL import ImageEnhance
 from skimage.color import lab2rgb, rgb2gray
 from torch.autograd import Variable
 from torchvision.transforms import transforms
@@ -74,4 +75,6 @@ def colorize_image(image: Image, gpu=False, model=COLORNET_MODEL_PATH) -> Image:
 
     img = img.astype(np.float32)
     img = lab2rgb(img)
-    return float32_array_to_image(img)
+    colorized_image = float32_array_to_image(img)
+    converter = ImageEnhance.Color(colorized_image)
+    return converter.enhance(1.5)
