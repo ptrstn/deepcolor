@@ -21,9 +21,9 @@ RICHZHANG_CLUSTER_CENTERS_PATH = Path(RESOURCES_PATH, "pts_in_hull.npy")
 # ---------
 # colornet
 # ---------
-COLORNET_MODEL_DOWNLOAD_URL = "https://cloud.magical.rocks/f/7d86125f7fdf4140b947/?dl=1"
+COLORNET_MODEL_DOWNLOAD_URL = "https://cloud.magical.rocks/f/082fe3bcd8d24412b9dd/?dl=1"
 
-COLORNET_MODEL_PATH = Path(RESOURCES_PATH, "colornet_params_ep_16.pkl")
+COLORNET_MODEL_PATH = Path(RESOURCES_PATH, "colornet_params_ep_18.pkl")
 
 # ------------
 # zeruniverse
