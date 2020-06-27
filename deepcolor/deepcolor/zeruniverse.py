@@ -1,77 +1,68 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# This file is based on the work "neural-colorization "neural-colorization" by Jeffery (Zeyu) Zhao
+# This file is based on the work "neural-colorization" by Jeffery (Zeyu) Zhao
 # See: https://github.com/zeruniverse/neural-colorization
 
-import torch
-from torch.autograd import Variable
-from scipy.ndimage import zoom
-import os
 import cv2
-from PIL import Image
-import argparse
 import numpy as np
-from skimage.color import rgb2yuv,yuv2rgb
+import torch
+from PIL import Image
+from scipy.ndimage import zoom
+from skimage.color import rgb2yuv, yuv2rgb
+from torch.autograd import Variable
 
+from .zeruniverse_network import generate_network
 from .settings import (
-    PRETRAINED_PYTORCH_MODEL_DOWNLOAD_URL,
-    PRETRAINED_PYTORCH_MODEL_PATH,
-    PYTORCH_MODEL_DOWNLOAD_URL,
-    PYTORCH_MODEL_PATH
+    ZERUNIVERSE_MODEL_DOWNLOAD_URL,
+    ZERUNIVERSE_MODEL_PATH,
 )
-from .utils import (
-    download_to_path,
-    extract_l_channel,
-    image_to_float32_array,
-    resize_image,
-    float32_array_to_image,
-)
-from .model import generator
+from .utils import download_to_path
 
 
-def generate_image(G, input, gpu):
-    original_image = input
-    #convert input image to RGB
-    image_rgb = input #Image.open(input).convert('RGB')
-    #convert rgb image to yuv color model
-    img_yuv = rgb2yuv(image_rgb)
-    #get width and height of yuv image
-    H,W,_ = img_yuv.shape
-    #do stuff
-    infimg = np.expand_dims(np.expand_dims(img_yuv[...,0], axis=0), axis=0)
-    img_variable = Variable(torch.Tensor(infimg-0.5))
-    if gpu>=0:
-        img_variable=img_variable.cuda(gpu)
-    res = G(img_variable)
-    uv=res.cpu().detach().numpy()
-    uv[:,0,:,:] *= 0.436
-    uv[:,1,:,:] *= 0.615
-    (_,_,H1,W1) = uv.shape
-    uv = zoom(uv,(1,1,H/H1,W/W1))
-    yuv = np.concatenate([infimg,uv],axis=1)[0]
-    rgb = yuv2rgb(yuv.transpose(1,2,0))
-    #create image
-    cv2.imwrite("data/output.jpg",(rgb.clip(min=0,max=1)*256)[:,:,[2,1,0]])
-    #convert image to RGB
+def generate_image(network, input, gpu=False):
+    # convert input image to RGB
+    image_rgb = input
+    image_yuv = rgb2yuv(image_rgb)
+    height, width, _ = image_yuv.shape
+    infimg = np.expand_dims(np.expand_dims(image_yuv[..., 0], axis=0), axis=0)
+    image_variable = Variable(torch.Tensor(infimg - 0.5))
+    if gpu:
+        image_variable = image_variable.cuda(gpu)
+    res = network(image_variable)
+    uv = res.cpu().detach().numpy()
+    uv[:, 0, :, :] *= 0.436
+    uv[:, 1, :, :] *= 0.615
+    (_, _, H1, W1) = uv.shape
+    uv = zoom(uv, (1, 1, height / H1, width / W1))
+    yuv = np.concatenate([infimg, uv], axis=1)[0]
+    rgb = yuv2rgb(yuv.transpose(1, 2, 0))
+    # create image
+    cv2.imwrite("data/output.jpg", (rgb.clip(min=0, max=1) * 256)[:, :, [2, 1, 0]])
+    # convert image to RGB
     output_image = Image.open("data/output.jpg").convert("RGB")
     return output_image
 
-def colorize_image_pytorch(image: Image, gpu):
+
+def colorize_image(image: Image, gpu=False) -> Image:
     download_pytorch_model_if_necessary()
 
-    G = generator()
-    #check which GPU to use or only use CPU
-    if gpu>=0:
-        G=G.cuda(gpu)
-        G.load_state_dict(torch.load(PRETRAINED_PYTORCH_MODEL_PATH, map_location='cuda:0'))
-    else:
-        G.load_state_dict(torch.load(PRETRAINED_PYTORCH_MODEL_PATH, map_location=torch.device('cpu')))
+    network = generate_network()
 
-    return generate_image(G, image, gpu)
+    if gpu:
+        assert torch.cuda.is_available(), "CUDA is unavailable. Cannot use GPU mode."
+        network = network.cuda(gpu)
+        network.load_state_dict(
+            torch.load(ZERUNIVERSE_MODEL_PATH, map_location="cuda:0")
+        )
+    else:
+        network.load_state_dict(
+            torch.load(ZERUNIVERSE_MODEL_PATH, map_location=torch.device("cpu"))
+        )
+
+    return generate_image(network, image, gpu)
+
 
 def download_pytorch_model_if_necessary(force=False):
-    if not PRETRAINED_PYTORCH_MODEL_PATH.exists() or force:
-        download_to_path(PRETRAINED_PYTORCH_MODEL_DOWNLOAD_URL, PRETRAINED_PYTORCH_MODEL_PATH)
-    #if not PYTORCH_MODEL_PATH.exists() or force:
-        #download_to_path(PYTORCH_MODEL_DOWNLOAD_URL, PYTORCH_MODEL_PATH)
+    if not ZERUNIVERSE_MODEL_PATH.exists() or force:
+        download_to_path(ZERUNIVERSE_MODEL_DOWNLOAD_URL, ZERUNIVERSE_MODEL_PATH)

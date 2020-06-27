@@ -35,6 +35,9 @@ export class FileUpload extends React.Component<FileUploadProps, FileUploadState
              modelValue: 'richzhang',
              modelsInfo: settings.models
             };
+    }
+
+    componentDidMount() {
         this.getModels();
     }
 
@@ -76,8 +79,8 @@ export class FileUpload extends React.Component<FileUploadProps, FileUploadState
         this.uploadHelper.getModels()
         .then((e) => {
             e = (e as ModelsInfo);
-            if(e && e.models) {
-                this.setState({modelsInfo: e.models});
+            if(e && e.strategies) {
+                this.setState({modelsInfo: e.strategies});
             }
         })
         .catch((e: RestErrors) => {

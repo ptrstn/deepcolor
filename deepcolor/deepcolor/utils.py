@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import numpy
 import skimage
 import wget
@@ -6,12 +8,31 @@ from matplotlib import pyplot
 from skimage import color
 from skimage import transform
 
+import requests
+
 
 def download_to_path(url, path):
     print(f"Downloading {url} \nto {path}\n")
-    path.parent.mkdir(exist_ok=True)
+    path.parent.mkdir(parents=True, exist_ok=True)
     wget.download(url, str(path), bar=wget.bar_adaptive)
     print()
+
+
+def download_to_path_with_requests(url, path):
+    print(f"Downloading {url} \nto {path}\n")
+    response = requests.get(url, stream=True)
+    save_response_content(response, path)
+    print()
+
+
+def save_response_content(response, destination):
+    chunk_size = 32768
+
+    Path(destination.parent).mkdir(parents=True, exist_ok=True)
+    with open(destination, "wb") as f:
+        for chunk in response.iter_content(chunk_size):
+            if chunk:  # filter out keep-alive new chunks
+                f.write(chunk)
 
 
 def load_image(path):
@@ -29,7 +50,7 @@ def float32_array_to_image(array: numpy.ndarray) -> Image:
 
 
 def convert_to_grayscale(image):
-    print(f"Converting {image.format} image with mode {image.mode} to grayscale")
+    print(f"Converting {image.format} image with mode {image.mode} to grayscale\n")
     if image.mode == "RGB":
         rgb_image = image
     elif image.mode == "L":
@@ -40,7 +61,8 @@ def convert_to_grayscale(image):
     lab_image = color.rgb2lab(rgb_image)
     lab_image = lab_image.copy()
     lab_image[:, :, 1:] = 0
-    return color.lab2rgb(lab_image)
+    grayscale_rgb_image = color.lab2rgb(lab_image)
+    return float32_array_to_image(grayscale_rgb_image)
 
 
 def extract_l_channel(rgb_image):
@@ -111,4 +133,9 @@ def show_images(*images, title=None, suptitle=None, padding=False):
     if title:
         pyplot.title(title)
     pyplot.axis("off")
+
+    pyplot.subplots_adjust(top=1, bottom=0, right=1, left=0, hspace=0, wspace=0)
+    pyplot.margins(0, 0)
+    pyplot.gca().xaxis.set_major_locator(pyplot.NullLocator())
+    pyplot.gca().yaxis.set_major_locator(pyplot.NullLocator())
     pyplot.show()
