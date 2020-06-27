@@ -226,7 +226,7 @@ There are multiple ways of training for the different Networks available. As the
 #### Colornet
 You can train the network with the provided train.py. The following graph shows how the network performs with Adadelta optimizer. We weighted the labels with ![formula](https://render.githubusercontent.com/render/math?math=\frac{1}{300}) to the overall loss of the network. 
 
-![image](https://user-images.githubusercontent.com/6242238/85754923-c7a29400-b70d-11ea-8da1-0d03d29afbf7.png)
+![image](https://user-images.githubusercontent.com/6242238/85933788-7ba54a00-b8db-11ea-9d35-062f59ec71ef.png)
 
 You can also use AdamW Optimizer with amsgrad. As a learning rate we used 0.0001 for a good learning performance. We changed the weight of the labels to ![formula](https://render.githubusercontent.com/render/math?math=\frac{1}{350}) which also performs good. The Adadelta optimizer is still the prefered method, as this will deliver overall better results, but the AdamW Optimized Network can outperform the Adadelta Network in some cases (but still, the opposite is more common). One example where this is the case can be seen below (left: AdamW, right: Adadelta):
 
