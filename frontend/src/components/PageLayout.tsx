@@ -35,7 +35,7 @@ export class PageLayout extends React.Component<PageLayoutProps, PageLayoutState
                     <div className="inner">
                         <h1>Welcome to <strong>Imaginator</strong>, an AI<br />
                         which can colorize your Images.</h1>
-                        <p>Imaginator is an Open Source ConvNet, which lets Old Images come to live.</p>
+                        <p>Imaginator is an Open Source ConvNet, which lets old Images come to live.</p>
                     </div>
 			    </section>
                 <section id="one" className="main style1">
@@ -45,7 +45,7 @@ export class PageLayout extends React.Component<PageLayoutProps, PageLayoutState
                                 <header className="major">
                                     <h2>Choose Your File</h2>
                                 </header>
-                                <p>Select the File you want to be colorized. This file will be Uploaded to our Server and we will process it.</p>
+                                <p>Select the file you want to be colorized. This file will be uploaded to our server and we will process it.</p>
                             </div>
                             <FileUpload ref={data => (this.manageImageResult(data))}></FileUpload>
                             <ImageDisplay original={this.state.original} colorized={this.state.colorized}></ImageDisplay>

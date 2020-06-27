@@ -11,7 +11,7 @@ export class UploadPayload {
 export class ModelsInfo {
     private constructor() {}
 
-    public models: { name: string; var: string; }[] | undefined;
+    public strategies: { name: string; var: string; }[] | undefined;
 }
 
 export class UploadHelper {
@@ -31,6 +31,6 @@ export class UploadHelper {
     }
 
     getModels(): Promise<RestErrors | ModelsInfo> {
-        return this.restHelper.restHandler(RestMethods.POST, "/api/v1/strategies/");
+        return this.restHelper.restHandler(RestMethods.GET, "/api/v1/strategies/");
     }
 }

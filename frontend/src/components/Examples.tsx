@@ -23,8 +23,6 @@ export class Examples extends React.Component<ExampleProps, ExampleState> {
 						</div>
 						<div className="col-4 col-12-medium">
 							<span className="image fit"><img src="examples/DSC_4912.jpg" alt="" /></span>
-							<h3>Magna feugiat lorem</h3>
-							<p>Adipiscing a commodo ante nunc magna lorem et interdum mi ante nunc lobortis non amet vis sed volutpat et nascetur.</p>
 						</div>
 						<div className="col-4 col-12-medium">
 							<span className="image fit"><img src="examples/DSC_5214.jpg" alt="" /></span>
