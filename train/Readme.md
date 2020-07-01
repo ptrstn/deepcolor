@@ -22,4 +22,5 @@ docker run --gpus 2 -v [path to image data]:/mnt/md0/work0/dl-ss20/T1/data -v [o
 /mnt/data/vision/torralba/deeplearning/images256/b/bamboo_forest/gsun_27fb23c53d956f4cdc71fbe52cc76ca3.jpg 0
 ```
 Where the first parameter is the absolute path to the images and the second a numeric ID for the label. You can use `pt1/places.py` to automate this
+
 4. Execute `start.sh`
