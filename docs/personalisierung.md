@@ -1,7 +1,6 @@
 # Personalisierung der Beiträge
 
-> Sie müssen bei der Abgabe genau angeben wer welchen Beitrag zu dem Projekt geleistet hat. 
-> Jede Leistungserbringung im Studium muss personalisiert sein!
+> Sie müssen bei der Abgabe genau angeben wer welchen Beitrag zu dem Projekt geleistet hat. Jede Leistungserbringung im Studium muss personalisiert sein!
 > 
 > — Prof. Dr. Bastian Beggel 
 
