@@ -10,8 +10,8 @@
 
 - Erstellung und Paketierung des Python Packages ```backend```
 - Implementierung des ```backend``` in Django 
-- Erstellen der benötigten Datenbank mdoels
-- Ermöglichung der Abspeicherung von Bildern in der Datenbank
+- Erstellen der benötigten Datenbank models
+- Ermöglichen der Speicherung von Bildern in der Datenbank
 - Implementierung der REST Endpoints mit dem Django REST framework
     - Endpoint für das Auflisten der verfügbaren Kolorierungsmethoden
     - Endpoint für das Kolorieren von Bildern
