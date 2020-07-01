@@ -41,3 +41,43 @@
 - Zahlreiche Bugfixes
 - Zahlreiche Refaktorisierungen
 - Ständige Kommunikation mit den anderen Teammitgliedern
+
+## Sebastian Dauenhauer
+
+#### Docker
+
+- Erstellen der Container Images für `frontend`
+- Erstellen der Build Pipeline für Docker
+- Erstellen eines Reverse Proxy Webservers zur Verbindung von `frontend` und `deepcolor`
+- Erstellen der Docker-Compose
+- Erstellen eines Docker Scripts für GPU basiertes CNN Netzwerk auf Dockerbasis
+
+#### ```frontend```
+
+- Erstellen der Frontend Schnittstelle zur Kommunikation mit dem backend mittels REST schnittstelle
+- Erstellen eines ersten Design Prototypen
+- Erstellen von React Componenten zur modularisierung des Frontends
+- Neuer Design Entwurf des Frontends basierend auf [HTML5Up](https://html5up.net/) Design
+- Anpassen des Designs auf mobile Geräte (responsive)
+- Erstellen von TypeScript Komponenten
+- Erstellen der Build Pipeline für `frontend`
+- Erstellen der Dokumentation (```README.md```) für ```frontend```
+
+#### ```deepcolor```
+- Erstellen des Colornet Models anhand des Papers `Let there be Color` und [einer PyTorch implementierung](https://github.com/shufanwu/colorNet-pytorch) 
+- Einbinden von `colornet` in Kolorierungsinterface
+
+#### Training
+- Erstellen eines Scripts zum Download sowie Verarbeiten der Trainingsdaten (places205)
+- Erstellen eines Trainingsscripts anhand der im Paper beschriebenen Parameter
+- Versuch Training durch andere Parameter und Algorithmen zu verbessern
+- Studieren von Verschiedenen Optimizern und Trainingsmethoden
+- Training von Colornet auf mehreren GPUs von Skynet
+- Erstellen der Dokumentation (```README.md```) für ```Training``` 
+    - `deepcolor/README.md` -> Abschnitt: Training 
+    - `train/README.md` -> komplett
+
+#### Sonstiges
+- Zahlreiche Bugfixes
+- Zahlreiche Refaktorisierungen
+- Ständige Kommunikation mit den anderen Teammitgliedern
