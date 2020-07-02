@@ -13,15 +13,9 @@ docker-compose up
 
 Then navigate to [localhost:8081](http://localhost:8081/)
 
-## Tasks
-
-- A website should be created, which should resemble [this](https://demos.algorithmia.com/colorize-photos) page.
-
-- The service should be accessible to the public and should not infringe the copyright of third parties
-
-- An own model is to be trained
-
 ## Resources
 
-- https://www.kaggle.com/shravankumar9892/image-colorization
 - http://iizuka.cs.tsukuba.ac.jp/projects/colorization/en/
+- http://richzhang.github.io/colorization/
+- https://github.com/zeruniverse/neural-colorization
+- https://www.kaggle.com/shravankumar9892/image-colorization
