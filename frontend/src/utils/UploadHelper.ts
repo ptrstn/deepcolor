@@ -27,10 +27,10 @@ export class UploadHelper {
         formData.append('file', file);
         formData.append('strategy', strategy);
 
-        return this.restHelper.restHandler(RestMethods.POST, "/api/v1/images/", formData);
+        return this.restHelper.restHandler(RestMethods.POST, process.env.PUBLIC_URL + "/api/v1/images/", formData);
     }
 
     getModels(): Promise<RestErrors | ModelsInfo> {
-        return this.restHelper.restHandler(RestMethods.GET, "/api/v1/strategies/");
+        return this.restHelper.restHandler(RestMethods.GET, process.env.PUBLIC_URL + "/api/v1/strategies/");
     }
 }

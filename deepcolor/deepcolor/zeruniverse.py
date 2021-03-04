@@ -11,6 +11,7 @@ from PIL import Image
 from scipy.ndimage import zoom
 from skimage.color import rgb2yuv, yuv2rgb
 from torch.autograd import Variable
+from pathlib import Path
 
 from .zeruniverse_network import generate_network
 from .settings import (
@@ -28,7 +29,7 @@ def generate_image(network, input, gpu=False):
     infimg = np.expand_dims(np.expand_dims(image_yuv[..., 0], axis=0), axis=0)
     image_variable = Variable(torch.Tensor(infimg - 0.5))
     if gpu:
-        image_variable = image_variable.cuda(gpu)
+        image_variable = image_variable.cuda()
     res = network(image_variable)
     uv = res.cpu().detach().numpy()
     uv[:, 0, :, :] *= 0.436
@@ -38,6 +39,7 @@ def generate_image(network, input, gpu=False):
     yuv = np.concatenate([infimg, uv], axis=1)[0]
     rgb = yuv2rgb(yuv.transpose(1, 2, 0))
     # create image
+    Path("data").mkdir(parents=True, exist_ok=True)
     cv2.imwrite("data/output.jpg", (rgb.clip(min=0, max=1) * 256)[:, :, [2, 1, 0]])
     # convert image to RGB
     output_image = Image.open("data/output.jpg").convert("RGB")
@@ -51,7 +53,7 @@ def colorize_image(image: Image, gpu=False) -> Image:
 
     if gpu:
         assert torch.cuda.is_available(), "CUDA is unavailable. Cannot use GPU mode."
-        network = network.cuda(gpu)
+        network = network.cuda()
         network.load_state_dict(
             torch.load(ZERUNIVERSE_MODEL_PATH, map_location="cuda:0")
         )

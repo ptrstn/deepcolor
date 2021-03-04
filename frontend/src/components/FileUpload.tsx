@@ -32,7 +32,7 @@ export class FileUpload extends React.Component<FileUploadProps, FileUploadState
              spinUploadIcon: false,
              uploadInfoText: "Choose a file",
              enableUpload: true,
-             modelValue: 'richzhang',
+             modelValue: 'colornet',
              modelsInfo: settings.models
             };
     }

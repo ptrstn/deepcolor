@@ -16,14 +16,14 @@ export class PageLayout extends React.Component<PageLayoutProps, PageLayoutState
 
     constructor(props: PageLayoutProps) {
         super(props);
-        this.state = {original: "/examples/colorized.jpg", colorized: "/examples/grey.jpg"};
+        this.state = {original: process.env.PUBLIC_URL + "/examples/colorized.jpg", colorized: process.env.PUBLIC_URL + "/examples/grey.jpg"};
     }
 
     private manageImageResult(data: FileUpload | null) {
         if(data === null) return;
         data.uploadEvent.on((e) => {
             if(!e || !e.colored || !e.original) return;
-            this.setState({colorized: e.colored, original: e.original});
+            this.setState({colorized: process.env.PUBLIC_URL + e.colored, original: process.env.PUBLIC_URL + e.original});
         });
     }
 

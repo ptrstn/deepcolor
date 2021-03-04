@@ -28,16 +28,16 @@ def create_strategy_entry(name, short, description, url=None):
 def available_strategies():
     return [
         create_strategy_entry(
-            "richzhang",
-            "Richard Zhang",
-            '"Colorful Image Colorization" by Richard Zhang',
-            "https://richzhang.github.io/",
-        ),
-        create_strategy_entry(
             "colornet",
             "Colornet",
             'Self trained network based on "Let there be Color!" by Satoshi Iizuka',
             "http://iizuka.cs.tsukuba.ac.jp/projects/colorization/en/",
+        ),
+        create_strategy_entry(
+            "richzhang",
+            "Richard Zhang",
+            '"Colorful Image Colorization" by Richard Zhang',
+            "https://richzhang.github.io/",
         ),
         create_strategy_entry(
             "zeruniverse",

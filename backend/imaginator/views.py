@@ -24,7 +24,7 @@ def create_deep_image_result(data):
     colorization_strategy = get_colorization_strategy(strategy_name)
 
     colored_image = deepcolor.colorize_image(
-        original_image, strategy=colorization_strategy
+        original_image, strategy=colorization_strategy, gpu=True
     )
 
     instance = DeepColorResult(original=file, strategy=strategy_name)

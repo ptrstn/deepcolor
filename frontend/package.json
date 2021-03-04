@@ -1,6 +1,7 @@
 {
   "name": "frontend",
   "version": "0.1.0",
+  "homepage": "/colornet/",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.13.0",
@@ -20,7 +21,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
-    "typescript": "~3.7.2"
+    "typescript": "^3.9.7"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -32,10 +33,12 @@
     "extends": "react-app"
   },
   "jest": {
-      "transform": {
-        "^.+\\.js$": "babel-jest"
-      },
-      "transformIgnorePatterns": ["node_modules/?!(image-compare-viewer)"]
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/?!(image-compare-viewer)"
+    ]
   },
   "browserslist": {
     "production": [

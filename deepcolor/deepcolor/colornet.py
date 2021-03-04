@@ -10,6 +10,7 @@ from .colornet_network import ColorNet
 from .settings import COLORNET_MODEL_DOWNLOAD_URL, COLORNET_MODEL_PATH
 from .utils import float32_array_to_image, download_to_path_with_requests
 
+device = "cpu"
 
 def download_colornet_model_if_necessary(force=False):
     if not COLORNET_MODEL_PATH.exists() or force:
@@ -22,6 +23,7 @@ def setup_model(pretrained_path, gpu=False):
     if gpu:
         assert torch.cuda.is_available(), "CUDA is unavailable. Cannot use GPU mode."
         color_model.load_state_dict(torch.load(pretrained_path, map_location="cuda:0"))
+        device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     else:
         color_model.load_state_dict(
             torch.load(pretrained_path, map_location=torch.device("cpu"))
@@ -56,12 +58,15 @@ def process_image(data, gpu=False):
     if gpu:
         original_img, scale_img = original_img.cuda(), scale_img.cuda()
 
+    print("GPU: ", gpu, ", img: ", scale_img)
     return original_img, scale_img, w, h
 
 
 def colorize_image(image: Image, gpu=False, model=COLORNET_MODEL_PATH) -> Image:
     download_colornet_model_if_necessary()
     color_model = setup_model(model, gpu=gpu)
+    if gpu:
+        color_model.cuda()
     data = setup_image(image)
     original_img, scale_img, w, h = process_image(data, gpu=gpu)
 

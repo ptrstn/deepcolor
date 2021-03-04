@@ -8,9 +8,9 @@ RESOURCES_PATH = Path(PACKAGE_ROOT, "resources")
 # richzhang
 # ----------
 RICHZHANG_PRETRAINED_MODEL_DOWNLOAD_URL = "http://eecs.berkeley.edu/~rich.zhang/projects/2016_colorization/files/demo_v2/colorization_release_v2.caffemodel"
-RICHZHANG_CAFFE_MODEL_DOWNLOAD_URL = "https://raw.githubusercontent.com/richzhang/colorization/master/models/colorization_deploy_v2.prototxt"
+RICHZHANG_CAFFE_MODEL_DOWNLOAD_URL = "https://raw.githubusercontent.com/richzhang/colorization/caffe/models/colorization_deploy_v2.prototxt"
 RICHZHANG_CLUSTER_CENTERS_DOWNLOAD_URL = (
-    "https://github.com/richzhang/colorization/raw/master/resources/pts_in_hull.npy"
+    "https://github.com/richzhang/colorization/raw/caffe/resources/pts_in_hull.npy"
 )
 RICHZHANG_PRETRAINED_MODEL_PATH = Path(
     RESOURCES_PATH, "colorization_release_v2.caffemodel"
